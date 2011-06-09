@@ -1,0 +1,611 @@
+# depslib dependency file v1.0
+1307560317 source:/home/rpg/engine/engine/FileIO.c
+	"Main.h"
+	"Macros.h"
+	"FileIO.h"
+	<luaconf.h>
+	<string.h>
+	<stdlib.h>
+	<stdio.h>
+	<physfs.h>
+
+1307515754 /home/rpg/engine/engine/Main.h
+	<stdarg.h>
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	<unistd.h>
+	<direct.h>
+	<SDL.h>
+	<SDL_keysym.h>
+	"lua.h"
+	"lualib.h"
+	"lauxlib.h"
+
+1257690727 /usr/include/SDL/SDL.h
+	"SDL_main.h"
+	"SDL_stdinc.h"
+	"SDL_audio.h"
+	"SDL_cdrom.h"
+	"SDL_cpuinfo.h"
+	"SDL_endian.h"
+	"SDL_error.h"
+	"SDL_events.h"
+	"SDL_loadso.h"
+	"SDL_mutex.h"
+	"SDL_rwops.h"
+	"SDL_thread.h"
+	"SDL_timer.h"
+	"SDL_video.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1257690727 /usr/include/SDL/SDL_main.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+	"begin_code.h"
+	"close_code.h"
+
+1257690727 /usr/include/SDL/SDL_stdinc.h
+	"SDL_config.h"
+	<sys/types.h>
+	<stdio.h>
+	<stdlib.h>
+	<stddef.h>
+	<stdarg.h>
+	<stdlib.h>
+	<malloc.h>
+	<stddef.h>
+	<stdarg.h>
+	<memory.h>
+	<string.h>
+	<strings.h>
+	<inttypes.h>
+	<stdint.h>
+	<ctype.h>
+	<iconv.h>
+	"begin_code.h"
+	<alloca.h>
+	<malloc.h>
+	<malloc.h>
+	<malloc.h>
+	<stdlib.h>
+	"close_code.h"
+
+1257690727 /usr/include/SDL/SDL_config.h
+	"SDL_platform.h"
+	<stdarg.h>
+
+1257690727 /usr/include/SDL/SDL_platform.h
+
+1257690727 /usr/include/SDL/begin_code.h
+
+1257690727 /usr/include/SDL/close_code.h
+
+1257690727 /usr/include/SDL/SDL_audio.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_endian.h"
+	"SDL_mutex.h"
+	"SDL_thread.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1257690727 /usr/include/SDL/SDL_error.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1257690727 /usr/include/SDL/SDL_endian.h
+	"SDL_stdinc.h"
+	<endian.h>
+	"begin_code.h"
+	"close_code.h"
+
+1257690727 /usr/include/SDL/SDL_mutex.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1257690727 /usr/include/SDL/SDL_thread.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_mutex.h"
+	"begin_code.h"
+	<process.h>
+	"close_code.h"
+
+1257690727 /usr/include/SDL/SDL_rwops.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1257690727 /usr/include/SDL/SDL_cdrom.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1257690727 /usr/include/SDL/SDL_cpuinfo.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1257690727 /usr/include/SDL/SDL_events.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_active.h"
+	"SDL_keyboard.h"
+	"SDL_mouse.h"
+	"SDL_joystick.h"
+	"SDL_quit.h"
+	"begin_code.h"
+	"close_code.h"
+
+1257690727 /usr/include/SDL/SDL_active.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1257690727 /usr/include/SDL/SDL_keyboard.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_keysym.h"
+	"begin_code.h"
+	"close_code.h"
+
+1257690727 /usr/include/SDL/SDL_keysym.h
+
+1257690727 /usr/include/SDL/SDL_mouse.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1257690727 /usr/include/SDL/SDL_video.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1257690727 /usr/include/SDL/SDL_joystick.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1257690727 /usr/include/SDL/SDL_quit.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+
+1257690727 /usr/include/SDL/SDL_loadso.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1257690727 /usr/include/SDL/SDL_timer.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1257690727 /usr/include/SDL/SDL_version.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1215794259 /home/rpg/engine/engine/Macros.h
+
+1236383148 /home/rpg/engine/engine/FileIO.h
+
+1307620447 source:/home/rpg/engine/engine/Font.c
+	"Main.h"
+	"Macros.h"
+	"Font.h"
+	"Graphics/Graphics.h"
+	"physfsrwops.h"
+
+1307477903 /home/rpg/engine/engine/Font.h
+	<SDL_opengl.h>
+
+1307377073 /home/rpg/engine/engine/Graphics.h
+	<SDL_opengl.h>
+
+1257690727 /usr/include/SDL/SDL_opengl.h
+	"SDL_config.h"
+	<windows.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<gl.h>
+	<glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<windows.h>
+	<stddef.h>
+
+1215794259 /home/rpg/engine/engine/physfsrwops.h
+	"physfs.h"
+	"SDL.h"
+
+1265360257 /usr/include/SDL/SDL_ttf.h
+	"SDL.h"
+	"begin_code.h"
+	"close_code.h"
+
+1307514097 source:/home/rpg/engine/engine/Graphics.c
+	<SDL_opengl.h>
+	<SDL_image.h>
+	<math.h>
+	"SOIL/SOIL.h"
+	"Main.h"
+	"Macros.h"
+	"Graphics.h"
+	"physfsrwops.h"
+
+1263134225 /usr/include/SDL/SDL_image.h
+	"SDL.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1242665876 /home/rpg/engine/engine/Movie.h
+	<smpeg/smpeg.h>
+	<SDL_opengl.h>
+
+1307477329 source:/home/rpg/engine/engine/Keyboard.c
+	"Main.h"
+	"Keyboard.h"
+
+1307471019 /home/rpg/engine/engine/Keyboard.h
+
+1307473117 source:/home/rpg/engine/engine/Macros.c
+	"Main.h"
+	"Macros.h"
+	<gtk/gtk.h>
+	<windows.h>
+	<Carbon/Carbon.h>
+
+1307560317 source:/home/rpg/engine/engine/Main.c
+	"Main.h"
+	"Macros.h"
+	"FileIO.h"
+	"Font.h"
+	"Graphics/Graphics.h"
+	"Mouse.h"
+	"Keyboard.h"
+	"Sound.h"
+	"Movie.h"
+	<string.h>
+	<SDL_opengl.h>
+
+1215794259 /home/rpg/engine/engine/Mouse.h
+
+1236383148 /home/rpg/engine/engine/Sound.h
+	<SDL_mixer.h>
+
+1266422981 /usr/include/SDL/SDL_mixer.h
+	"SDL_types.h"
+	"SDL_rwops.h"
+	"SDL_audio.h"
+	"SDL_endian.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1257690727 /usr/include/SDL/SDL_types.h
+	"SDL_stdinc.h"
+
+1192422065 /home/rpg/engine/engine/luasocket/luasocket.h
+	"lua.h"
+
+1192422065 /home/rpg/engine/engine/luasocket/mime.h
+	"lua.h"
+
+1224871633 source:/home/rpg/engine/engine/Mouse.c
+	"Main.h"
+	"Mouse.h"
+	<string.h>
+
+1252178482 source:/home/rpg/engine/engine/Movie.c
+	<smpeg/smpeg.h>
+	<SDL_mixer.h>
+	"Main.h"
+	"Macros.h"
+	"Movie.h"
+	"Graphics.h"
+	"physfsrwops.h"
+
+1307349220 source:/home/rpg/engine/engine/SOIL/SOIL.c
+	<windows.h>
+	<wingdi.h>
+	<GL/gl.h>
+	<OpenGL/gl.h>
+	<Carbon/Carbon.h>
+	<GL/gl.h>
+	<GL/glx.h>
+	"SOIL.h"
+	"stb_image_aug.h"
+	"image_helper.h"
+	"image_DXT.h"
+	<stdlib.h>
+	<string.h>
+
+1215440008 /home/rpg/engine/engine/SOIL/SOIL.h
+
+1215440008 /home/rpg/engine/engine/SOIL/stb_image_aug.h
+	<stdio.h>
+
+1215440008 /home/rpg/engine/engine/SOIL/image_helper.h
+
+1215440008 /home/rpg/engine/engine/SOIL/image_DXT.h
+
+1215440008 source:/home/rpg/engine/engine/SOIL/image_DXT.c
+	"image_DXT.h"
+	<math.h>
+	<stdlib.h>
+	<string.h>
+	<stdio.h>
+
+1215440008 source:/home/rpg/engine/engine/SOIL/image_helper.c
+	"image_helper.h"
+	<stdlib.h>
+	<math.h>
+
+1215440008 source:/home/rpg/engine/engine/SOIL/original/stb_image-1.09.c
+	<stdio.h>
+	<math.h>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<memory.h>
+	<assert.h>
+	<stdarg.h>
+
+1215440008 source:/home/rpg/engine/engine/SOIL/original/stb_image-1.16.c
+	<stdio.h>
+	<math.h>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<memory.h>
+	<assert.h>
+	<stdarg.h>
+
+1215440008 source:/home/rpg/engine/engine/SOIL/stb_image_aug.c
+	"stb_image_aug.h"
+	<math.h>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<memory.h>
+	<assert.h>
+	<stdarg.h>
+	"stbi_DDS_aug.h"
+	"stbi_DDS_aug_c.h"
+
+1215440008 /home/rpg/engine/engine/SOIL/stbi_DDS_aug.h
+
+1307560594 /home/rpg/engine/engine/SOIL/stbi_DDS_aug_c.h
+
+1307560317 source:/home/rpg/engine/engine/Sound.c
+	<SDL_mixer.h>
+	"Main.h"
+	"Macros.h"
+	"Sound.h"
+	"physfsrwops.h"
+
+1192422065 source:/home/rpg/engine/engine/luasocket/auxiliar.c
+	<string.h>
+	<stdio.h>
+	"auxiliar.h"
+
+1192422065 /home/rpg/engine/engine/luasocket/auxiliar.h
+	"lua.h"
+	"lauxlib.h"
+
+1192422065 source:/home/rpg/engine/engine/luasocket/buffer.c
+	"lua.h"
+	"lauxlib.h"
+	"buffer.h"
+
+1192422065 /home/rpg/engine/engine/luasocket/buffer.h
+	"lua.h"
+	"io.h"
+	"timeout.h"
+
+1192422065 /home/rpg/engine/engine/luasocket/io.h
+	<stdio.h>
+	"lua.h"
+	"timeout.h"
+
+1192422065 /home/rpg/engine/engine/luasocket/timeout.h
+	"lua.h"
+
+1192422065 source:/home/rpg/engine/engine/luasocket/except.c
+	<stdio.h>
+	"lua.h"
+	"lauxlib.h"
+	"except.h"
+
+1192422065 /home/rpg/engine/engine/luasocket/except.h
+	"lua.h"
+
+1192422065 source:/home/rpg/engine/engine/luasocket/inet.c
+	<stdio.h>
+	<string.h>
+	"lua.h"
+	"lauxlib.h"
+	"inet.h"
+
+1192422065 /home/rpg/engine/engine/luasocket/inet.h
+	"lua.h"
+	"socket.h"
+	"timeout.h"
+
+1192422065 /home/rpg/engine/engine/luasocket/socket.h
+	"io.h"
+	"wsocket.h"
+	"usocket.h"
+	"timeout.h"
+
+1192422065 /home/rpg/engine/engine/luasocket/usocket.h
+	<errno.h>
+	<unistd.h>
+	<fcntl.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<sys/time.h>
+	<netdb.h>
+	<signal.h>
+	<netinet/in.h>
+	<arpa/inet.h>
+	<netinet/tcp.h>
+
+1192422065 source:/home/rpg/engine/engine/luasocket/io.c
+	"io.h"
+
+1192422065 source:/home/rpg/engine/engine/luasocket/luasocket.c
+	"lua.h"
+	"lauxlib.h"
+	"compat-5.1.h"
+	"luasocket.h"
+	"auxiliar.h"
+	"except.h"
+	"timeout.h"
+	"buffer.h"
+	"inet.h"
+	"tcp.h"
+	"udp.h"
+	"select.h"
+
+1192422065 /home/rpg/engine/engine/luasocket/tcp.h
+	"lua.h"
+	"buffer.h"
+	"timeout.h"
+	"socket.h"
+
+1192422065 /home/rpg/engine/engine/luasocket/udp.h
+	"lua.h"
+	"timeout.h"
+	"socket.h"
+
+1192422065 /home/rpg/engine/engine/luasocket/select.h
+
+1192422065 source:/home/rpg/engine/engine/luasocket/mime.c
+	<string.h>
+	"lua.h"
+	"lauxlib.h"
+	"compat-5.1.h"
+	"mime.h"
+
+1192422065 source:/home/rpg/engine/engine/luasocket/options.c
+	<string.h>
+	"lauxlib.h"
+	"auxiliar.h"
+	"options.h"
+	"inet.h"
+
+1192422065 /home/rpg/engine/engine/luasocket/options.h
+	"lua.h"
+	"socket.h"
+
+1192422065 source:/home/rpg/engine/engine/luasocket/select.c
+	<string.h>
+	"lua.h"
+	"lauxlib.h"
+	"socket.h"
+	"timeout.h"
+	"select.h"
+
+1192422065 source:/home/rpg/engine/engine/luasocket/tcp.c
+	<string.h>
+	"lua.h"
+	"lauxlib.h"
+	"auxiliar.h"
+	"socket.h"
+	"inet.h"
+	"options.h"
+	"tcp.h"
+
+1192422065 source:/home/rpg/engine/engine/luasocket/timeout.c
+	<stdio.h>
+	"lua.h"
+	"lauxlib.h"
+	"auxiliar.h"
+	"timeout.h"
+	<windows.h>
+	<time.h>
+	<sys/time.h>
+
+1192422065 source:/home/rpg/engine/engine/luasocket/udp.c
+	<string.h>
+	"lua.h"
+	"lauxlib.h"
+	"auxiliar.h"
+	"socket.h"
+	"inet.h"
+	"options.h"
+	"udp.h"
+
+1192422065 source:/home/rpg/engine/engine/luasocket/usocket.c
+	<string.h>
+	<signal.h>
+	"socket.h"
+	<sys/poll.h>
+
+1215794259 source:/home/rpg/engine/engine/physfsrwops.c
+	<stdio.h>
+	"physfsrwops.h"
+
+1307617308 /home/rpg/engine/engine/Graphics/Graphics.h
+	<SDL_opengl.h>
+
+1307617290 source:/home/rpg/engine/engine/Graphics/Graphics.c
+	<SDL_opengl.h>
+	<SDL_image.h>
+	<math.h>
+	"../SOIL/SOIL.h"
+	"../Main.h"
+	"../Macros.h"
+	"Graphics.h"
+	"../physfsrwops.h"
+
+1307617921 source:/home/rpg/engine/engine/Graphics/image.c
+	<SDL_opengl.h>
+	<SDL_image.h>
+	<math.h>
+	"../SOIL/SOIL.h"
+	"../Main.h"
+	"../Macros.h"
+	"Graphics.h"
+	"../physfsrwops.h"
+
+1307567746 source:/home/rpg/engine/engine/Graphics/init.c
+	<SDL_opengl.h>
+	<SDL_image.h>
+	<math.h>
+	"../SOIL/SOIL.h"
+	"../Main.h"
+	"../Macros.h"
+	"Graphics.h"
+	"../physfsrwops.h"
+
+1307553434 source:/home/rpg/engine/engine/Graphics/primitives.c
+	<SDL_opengl.h>
+	<SDL_image.h>
+	<math.h>
+	"../SOIL/SOIL.h"
+	"../Main.h"
+	"../Macros.h"
+	"Graphics.h"
+	"../physfsrwops.h"
+
