@@ -173,8 +173,8 @@ int Lua_Image_drawq(lua_State *L) {
 	}
 	if(!w) w = image->w;
 	if(!h) h = w * image->h / image->w;
-	qx = qx ? qx/(float)image->w : 0;
-	qy = qy ? qy/(float)image->h : 0;
+	qx = qx/(float)image->w;
+	qy = qy/(float)image->h;
 	qw = qw ? qx + qw/(float)image->w : 1;
 	qh = qh ? qy + qh/(float)image->h : 1;
 	/* save the modelview matrix */

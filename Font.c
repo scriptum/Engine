@@ -29,7 +29,7 @@ static int Lua_Font_load(lua_State *L) {
 	return 1;
 }
 
-float Lua_Font_Width(Lua_Font *f, const char *str)
+float Lua_Font_Width(Lua_Font *f, register const char *str)
 {
     float width = 0;
     if(*str)
@@ -72,8 +72,8 @@ static int Lua_Font_stringHeight(lua_State *L) {
 }
 
 static int Lua_Font_print(lua_State *L) {
-    if(!currentFont) return luaL_error(L, "Call Font.set(<font name>, <font size>) first!");
-    const char * str = luaL_checkstring(L, 1);
+    if(!currentFont) return luaL_error(L, "Call <yourfont>:select() first!");
+    register const char * str = luaL_checkstring(L, 1);
     float x = (float)luaL_checknumber(L, 2);
     float y = (float)luaL_checknumber(L, 3);
     float width = (float)lua_tonumber(L, 4);
@@ -123,6 +123,39 @@ static int Lua_Font_print(lua_State *L) {
     glDisable(GL_CULL_FACE);
 	glDisable(GL_TEXTURE_2D);
 	return 0;
+}
+
+static int Lua_Font_stringToLines(lua_State *L) {
+    register const char * str = luaL_checkstring(L, 1);
+    char * buf = str;
+    float maxw = (float)luaL_checknumber(L, 2), w = 0;
+    int i = 1, pos = 0, last_space;
+    lua_newtable(L);
+    if(*str)
+	do {
+	    switch(*str)
+	    {
+            case '\t':
+                w += currentFont->chars[32].w * 8;
+                last_space = pos;
+                break;
+            case ' ':
+                last_space = pos;
+            default:
+                w += currentFont->chars[*str].w
+	    }
+	    if(w > maxw || *str == '\n')
+	    {
+	        if(!last_space) last_space = pos;
+            lua_pushlstring(L, buf, last_space);
+            lua_rawseti(L, -2, i++);
+            pos = last_space = 0;
+            buf = str + 1;
+            w = 0;
+	    }
+	} while(*++str);
+	lua_pushlstring(L, buf, last_space);
+    lua_rawseti(L, -2, i);
 }
 
 static int Lua_Font_setCurrentFont(lua_State *L) {
