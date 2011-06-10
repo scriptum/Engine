@@ -20,6 +20,7 @@ static int Lua_Font_load(lua_State *L) {
 	Lua_Font *ptr;
 	ptr = lua_newuserdata(L, sizeof(Lua_Font));
 	ptr->texture = img->texture;
+	ptr->scale = 1;
 	//printf("%d\n",img->texture);
 	ptr->w = img->w;
 	ptr->h = img->h;
@@ -28,16 +29,64 @@ static int Lua_Font_load(lua_State *L) {
 	return 1;
 }
 
+float Lua_Font_Width(Lua_Font *f, const char *str)
+{
+    float width = 0;
+    if(*str)
+	do {
+	    if(*str == '\t')\
+	    {
+            width += f->chars[32].w * 8;
+	        continue;
+        }
+        else if(*str == '\n')
+            width = 0;
+	    width += f->chars[(unsigned char)*str].w;
+	} while(*++str);
+
+	return width * f->scale;
+}
+
+static int Lua_Font_width(lua_State *L) {
+    Lua_Font *font = checkfont(L);
+    const char * str = luaL_checkstring(L, 2);
+    lua_pushnumber(L, Lua_Font_Width(font, str));
+    return 1;
+}
+
+static int Lua_Font_height(lua_State *L) {
+    Lua_Font *font = checkfont(L);
+    lua_pushinteger(L, font->height);
+	return 1;
+}
+
+static int Lua_Font_stringWidth(lua_State *L) {
+    const char * str = luaL_checkstring(L, 1);
+    lua_pushnumber(L, Lua_Font_Width(currentFont, str));
+    return 1;
+}
+
+static int Lua_Font_stringHeight(lua_State *L) {
+    lua_pushinteger(L, currentFont->height);
+	return 1;
+}
+
 static int Lua_Font_print(lua_State *L) {
     if(!currentFont) return luaL_error(L, "Call Font.set(<font name>, <font size>) first!");
     const char * str = luaL_checkstring(L, 1);
     float x = (float)luaL_checknumber(L, 2);
     float y = (float)luaL_checknumber(L, 3);
+    float width = (float)lua_tonumber(L, 4);
+    const char *align = lua_tostring(L, 5);
     float w = 0, buf1, buf2;
     unsigned char c;
     Lua_FontChar *ch;
     glPushMatrix();
+    if(align)
+    if(strcmp(align, "center") == 0) x = floor(x + (width - Lua_Font_Width(currentFont, str))/2.0f);
+    else if(strcmp(align, "right") == 0)  x = floor(x + width - Lua_Font_Width(currentFont, str));
     glTranslatef(x, y, 0);
+    glScalef(currentFont->scale, currentFont->scale, 0);
 
     glBindTexture(GL_TEXTURE_2D, currentFont->texture);
     glEnable(GL_CULL_FACE);
@@ -46,18 +95,23 @@ static int Lua_Font_print(lua_State *L) {
     //glBlendFunc(GL_SRC_ALPHA, GL_ONE);
     //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     //glEnable(GL_ALPHA_TEST);
+//    char *last_space;
     if(*str)
 	do {
-	    if(*str == '\n') {
-	        glTranslatef(-w, currentFont->chars[32].h, 0);
-	        w = 0;
-	        continue;
-        } else if(*str == '\t')
-        {
-            glTranslatef(currentFont->chars[32].w * 8, 0, 0);
-            w += currentFont->chars[32].w * 8;
-	        continue;
-        }
+	    switch(*str)
+	    {
+	        case '\n':
+                glTranslatef(-w, currentFont->height, 0);
+                w = 0;
+                continue;
+            case '\t':
+                glTranslatef(currentFont->chars[32].w * 8, 0, 0);
+                w += currentFont->chars[32].w * 8;
+//                last_space = str;
+                continue;
+//            case ' ':
+//                last_space = str;
+	    }
         ch = &currentFont->chars[(unsigned char)*str];
         glCallList(ch->list);
         glTranslatef(ch->w, 0, 0);
@@ -71,53 +125,15 @@ static int Lua_Font_print(lua_State *L) {
 	return 0;
 }
 
-static int Lua_Font_width(lua_State *L) {
-    int width = 0;
-    Lua_Font *font = checkfont(L);
-    const char * str = luaL_checkstring(L, 2);
-    if(*str)
-	do {
-	    if(*str == '\t')
-	    {
-            width += font->chars[32].w * 8;
-	        continue;
-        }
-	    width += font->chars[(unsigned char)*str].w;
-	} while(*++str);
-	lua_pushinteger(L, width);
-	return 1;
-}
-
-static int Lua_Font_height(lua_State *L) {
-    Lua_Font *font = checkfont(L);
-    lua_pushinteger(L, font->chars[32].h);
-	return 1;
-}
-
-static int Lua_Font_stringWidth(lua_State *L) {
-    int width = 0;
-    const char * str = luaL_checkstring(L, 1);
-    if(*str)
-	do {
-	    if(*str == '\t')
-	    {
-            width += currentFont->chars[32].w * 8;
-	        continue;
-        }
-	    width += currentFont->chars[(unsigned char)*str].w;
-	} while(*++str);
-	lua_pushinteger(L, width);
-	return 1;
-}
-
-static int Lua_Font_stringHeight(lua_State *L) {
-    lua_pushinteger(L, currentFont->chars[32].h);
-	return 1;
-}
-
 static int Lua_Font_setCurrentFont(lua_State *L) {
     currentFont = checkfont(L);
     return 0;
+}
+
+static int Lua_Font_scale(lua_State *L) {
+    Lua_Font *font = checkfont(L);
+    font->scale = luaL_checknumber(L, 2);
+	return 0;
 }
 
 static int Lua_Font_setGlyph(lua_State *L) {
@@ -141,7 +157,7 @@ static int Lua_Font_setGlyph(lua_State *L) {
     glEnd();
     glEndList();
 	ptr->chars[ch].w = (float)luaL_checknumber(L, 9);
-	ptr->chars[ch].h = (float)luaL_checknumber(L, 10);
+	ptr->height = (float)luaL_checknumber(L, 10);
 	return 0;
 }
 
@@ -169,6 +185,7 @@ static const struct luaL_Reg fontlib_m [] = {
 	{"select", Lua_Font_setCurrentFont},
 	{"width", Lua_Font_width},
 	{"height", Lua_Font_height},
+	{"scale", Lua_Font_scale},
 	{NULL, NULL}
 };
 

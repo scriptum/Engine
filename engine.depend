@@ -207,14 +207,14 @@
 
 1236383148 /home/rpg/engine/engine/FileIO.h
 
-1307620447 source:/home/rpg/engine/engine/Font.c
+1307664555 source:/home/rpg/engine/engine/Font.c
 	"Main.h"
 	"Macros.h"
 	"Font.h"
 	"Graphics/Graphics.h"
 	"physfsrwops.h"
 
-1307477903 /home/rpg/engine/engine/Font.h
+1307639205 /home/rpg/engine/engine/Font.h
 	<SDL_opengl.h>
 
 1307377073 /home/rpg/engine/engine/Graphics.h
@@ -274,7 +274,7 @@
 	<windows.h>
 	<Carbon/Carbon.h>
 
-1307560317 source:/home/rpg/engine/engine/Main.c
+1307664642 source:/home/rpg/engine/engine/Main.c
 	"Main.h"
 	"Macros.h"
 	"FileIO.h"
@@ -566,10 +566,10 @@
 	<stdio.h>
 	"physfsrwops.h"
 
-1307617308 /home/rpg/engine/engine/Graphics/Graphics.h
+1307666325 /home/rpg/engine/engine/Graphics/Graphics.h
 	<SDL_opengl.h>
 
-1307617290 source:/home/rpg/engine/engine/Graphics/Graphics.c
+1307665494 source:/home/rpg/engine/engine/Graphics/Graphics.c
 	<SDL_opengl.h>
 	<SDL_image.h>
 	<math.h>
@@ -599,7 +599,7 @@
 	"Graphics.h"
 	"../physfsrwops.h"
 
-1307553434 source:/home/rpg/engine/engine/Graphics/primitives.c
+1307623249 source:/home/rpg/engine/engine/Graphics/primitives.c
 	<SDL_opengl.h>
 	<SDL_image.h>
 	<math.h>

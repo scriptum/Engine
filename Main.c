@@ -223,7 +223,8 @@ int main(int argc, char *argv[]) {
 	while ( !done ) {
 		lastTick = SDL_GetTicks();
 
-		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+		glClear( GL_COLOR_BUFFER_BIT );
+		glLoadIdentity();
 
 		/* maybe the 'main' table has changed
 		   so get a new reference in every cycle */

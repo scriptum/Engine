@@ -12,13 +12,13 @@
 typedef struct Lua_FontChar
 {
     GLuint list;
-    float w, h;
+    float w;
 } Lua_FontChar;
 
 typedef struct Lua_Font {
 	/* OpenGL texture id */
 	GLuint texture;
-	float w, h;
+	float w, h, scale, height;
 	Lua_FontChar chars[256];
 } Lua_Font;
 

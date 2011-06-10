@@ -270,9 +270,9 @@ end
 local image_draw_quad = function(s)
   s.image:drawq(s)
 end
-function Entity:image(image, isQuad)
+function Entity:image(image, isQuad, isRepeat)
  if image then
-    if type(image) == 'string' then image = G.newImage(image) end
+    if type(image) == 'string' then image = G.newImage(image, isRepeat) end
     self.image = image
     self.w = image:getWidth()
     self.h = image:getHeight()

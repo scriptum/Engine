@@ -50,7 +50,11 @@ int Lua_Graphics_translateView(lua_State *L) {
 
 int Lua_Graphics_scaleView(lua_State *L) {
 	GLdouble scaleX = (GLdouble)luaL_checknumber(L, 1);
-	GLdouble scaleY = (GLdouble)luaL_checknumber(L, 2);
+	GLdouble scaleY;
+	if(lua_isnumber(L, 2))
+        scaleY = (GLdouble)luaL_checknumber(L, 2);
+    else
+        scaleY = scaleX;
 	glScaled(scaleX, scaleY, 0);
 	return 0;
 }
@@ -85,21 +89,21 @@ int Lua_Graphics_resetView(lua_State *L) {
 
 static const struct luaL_Reg graphicslib [] = {
 	{"init",				Lua_Graphics_init},
-	{"getWindowWidth",		Lua_Graphics_getWindowWidth},
-	{"getWindowHeight",		Lua_Graphics_getWindowHeight},
-	{"getWindowSize",		Lua_Graphics_getWindowSize},
+	{"getWidth",		Lua_Graphics_getWindowWidth},
+	{"getHeight",		Lua_Graphics_getWindowHeight},
+	{"getSize",		Lua_Graphics_getWindowSize},
 	{"showCursor",			Lua_Graphics_showCursor},
 	{"getTicks",			Lua_Graphics_getTicks},
-	{"translateView",		Lua_Graphics_translateView},
+	{"translate",		Lua_Graphics_translateView},
 	{"scale",		    	Lua_Graphics_scaleView},
-	{"rotateView",			Lua_Graphics_rotateView},
-	{"saveView",			Lua_Graphics_saveView},
-	{"restoreView",			Lua_Graphics_restoreView},
-	{"resetView",			Lua_Graphics_resetView},
+	{"rotate",			Lua_Graphics_rotateView},
+	{"push",			Lua_Graphics_saveView},
+	{"pop",			Lua_Graphics_restoreView},
+	{"reset",			Lua_Graphics_resetView},
 	{"setColor",			Lua_Graphics_setColor},
 	{"setBlendMode",		Lua_Graphics_setBlendMode},
 	{"newImage",			Lua_Image_load},
-	{"addImageFromString",	Lua_Image_loadFromString},
+	{"imageFromString",	Lua_Image_loadFromString},
 	{"line",				Lua_Graphics_line},
 	{"rectangle",			Lua_Graphics_rectangle},
 	{"point",		    	Lua_Graphics_point},

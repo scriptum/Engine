@@ -13,7 +13,7 @@
 #define checkimage(L) \
 	(Lua_Image *)luaL_checkudata(L, 1, "scrupp.image")
 
-int load_image_from_string(lua_State *L, const unsigned char *myBuf, unsigned int file_size) {
+int load_image_from_string(lua_State *L, const unsigned char *myBuf, unsigned int file_size, int repeat) {
     Lua_Image *ptr;
     int width, height, channels;
 	unsigned int tex_id;
@@ -26,7 +26,7 @@ int load_image_from_string(lua_State *L, const unsigned char *myBuf, unsigned in
 		return 0;
 	tex_id = SOIL_internal_create_OGL_texture(
 			img, width, height, channels,
-			0, SOIL_FLAG_TEXTURE_REPEATS,
+			0, SOIL_FLAG_TEXTURE_REPEATS * repeat,
 			GL_TEXTURE_2D, GL_TEXTURE_2D,
 			GL_MAX_TEXTURE_SIZE );
 	/*	and nuke the image data	*/
@@ -42,6 +42,7 @@ int load_image_from_string(lua_State *L, const unsigned char *myBuf, unsigned in
 
 int Lua_Image_load(lua_State *L) {
 	const char* filename = luaL_checkstring(L, 1);
+	int repeat = lua_toboolean(L, 2);
 	PHYSFS_file* myfile = PHYSFS_openRead(filename);
     if (!myfile)
 		return luaL_error(L, "Error loading file '%s': %s", filename, SDL_GetError());
@@ -50,7 +51,7 @@ int Lua_Image_load(lua_State *L) {
     myBuf = (unsigned char *)malloc(sizeof(unsigned char) * file_size);
     PHYSFS_read (myfile, myBuf, sizeof(unsigned char), file_size);
     PHYSFS_close(myfile);
-    int res = load_image_from_string(L, myBuf, file_size);
+    int res = load_image_from_string(L, myBuf, file_size, repeat);
     free(myBuf);
     if(!res) return luaL_error(L, "Error loading file '%s': %s", filename, stbi_failure_reason());
 	return 1;
@@ -59,7 +60,8 @@ int Lua_Image_load(lua_State *L) {
 int Lua_Image_loadFromString(lua_State *L) {
 	unsigned int file_size;
 	const unsigned char* myBuf = luaL_checklstring(L, 1, &file_size);
-	int res = load_image_from_string(L, myBuf, file_size);
+	int repeat = lua_toboolean(L, 2);
+	int res = load_image_from_string(L, myBuf, file_size, repeat);
 	if(!res) return luaL_error(L, "Error loading file from string: %s", stbi_failure_reason());
 	return 1;
 }
@@ -131,10 +133,10 @@ int Lua_Image_draw(lua_State *L) {
 	glEnable(GL_TEXTURE_2D);
 
 	glBegin(GL_QUADS);
-	glTexCoord2f(0, 0);         glVertex2i(0, 0);
-    glTexCoord2f(0, th);       glVertex2i(0, h);
-    glTexCoord2f(tw, th);     glVertex2i(w, h);
-    glTexCoord2f(tw, 0);       glVertex2i(w, 0);
+	glTexCoord2f(0, 0);         glVertex2f(0, 0);
+    glTexCoord2f(0, th);       glVertex2f(0, h);
+    glTexCoord2f(tw, th);     glVertex2f(w, h);
+    glTexCoord2f(tw, 0);       glVertex2f(w, 0);
     glEnd();
 	glPopMatrix();
     glDisable(GL_CULL_FACE);

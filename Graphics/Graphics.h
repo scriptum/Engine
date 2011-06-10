@@ -57,7 +57,7 @@ int Lua_Graphics_restoreView(lua_State *L);
 
 int Lua_Graphics_resetView(lua_State *L);
 
-int load_image_from_string(lua_State *L, const unsigned char *myBuf, unsigned int file_size);
+int load_image_from_string(lua_State *L, const unsigned char *myBuf, unsigned int file_size, int repeat);
 
 int Lua_Image_load(lua_State *L);
 
