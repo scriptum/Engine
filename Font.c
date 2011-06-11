@@ -142,7 +142,7 @@ static int Lua_Font_stringToLines(lua_State *L) {
             case ' ':
                 last_space = pos;
             default:
-                w += currentFont->chars[*str].w
+                w += currentFont->chars[*str].w;
 	    }
 	    if(w > maxw || *str == '\n')
 	    {

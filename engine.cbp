@@ -29,6 +29,10 @@
 				<Linker>
 					<Add option="-s" />
 				</Linker>
+				<ExtraCommands>
+					<Add after="cp /home/rpg/engine/engine/bin/Release/engine /home/rpg/Игры/Monopoly/bin/linux" />
+					<Mode after="always" />
+				</ExtraCommands>
 			</Target>
 		</Build>
 		<Compiler>
@@ -98,6 +102,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Sound.h" />
+		<Unit filename="physfsrwops.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="physfsrwops.h" />
 		<Unit filename="version.h">
 			<Option target="Release" />
 		</Unit>

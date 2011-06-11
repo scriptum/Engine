@@ -2,10 +2,11 @@
 
 --преобразует font.fnt в уже готовый lua-файл, скорость возрастает в разы.
 
+if not arg[1] then print("Usage: "..arg[0].." <yourfont>.fnt") end
 function string.trim(s)
   return s:gsub("^%s+", ""):gsub("%s+$", "")
 end
-io.output(io.open("font.lua","w"))
+io.output(io.open(string.gsub(arg[1], "\.fnt", ".lua"),"w"))
 io.write("if not Fonts then Fonts = {} end\n")
 io.write("if not FontTextures then FontTextures = {} end\n")
 io.write("local d\n")
@@ -15,7 +16,7 @@ local c,x,y,cw,ch,cx,cy,w,h
 local fontname, fontsize, fontsizetype
 local fontdata
 local ffontname, ffontsize
-for line in io.lines("font.fnt") do
+for line in io.lines(arg[1]) do
 	if not img then 
 		img = line:match("textures:(.+)")
 		io.write("t = G.newImage(\"" .. img:trim() .. "\")\n")

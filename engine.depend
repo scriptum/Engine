@@ -207,14 +207,9 @@
 
 1236383148 /home/rpg/engine/engine/FileIO.h
 
-1307664555 source:/home/rpg/engine/engine/Font.c
-	"Main.h"
-	"Macros.h"
-	"Font.h"
-	"Graphics/Graphics.h"
-	"physfsrwops.h"
+1307785178 source:/home/rpg/engine/engine/Font.c
 
-1307639205 /home/rpg/engine/engine/Font.h
+1307783066 /home/rpg/engine/engine/Font.h
 	<SDL_opengl.h>
 
 1307377073 /home/rpg/engine/engine/Graphics.h
@@ -274,7 +269,7 @@
 	<windows.h>
 	<Carbon/Carbon.h>
 
-1307664642 source:/home/rpg/engine/engine/Main.c
+1307778392 source:/home/rpg/engine/engine/Main.c
 	"Main.h"
 	"Macros.h"
 	"FileIO.h"
@@ -310,7 +305,7 @@
 1192422065 /home/rpg/engine/engine/luasocket/mime.h
 	"lua.h"
 
-1224871633 source:/home/rpg/engine/engine/Mouse.c
+1307725484 source:/home/rpg/engine/engine/Mouse.c
 	"Main.h"
 	"Mouse.h"
 	<string.h>
@@ -579,7 +574,7 @@
 	"Graphics.h"
 	"../physfsrwops.h"
 
-1307617921 source:/home/rpg/engine/engine/Graphics/image.c
+1307690297 source:/home/rpg/engine/engine/Graphics/image.c
 	<SDL_opengl.h>
 	<SDL_image.h>
 	<math.h>

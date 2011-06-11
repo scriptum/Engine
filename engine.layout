@@ -4,28 +4,28 @@
 	<File name="FileIO.c" open="1" top="0" tabpos="1">
 		<Cursor position="5009" topLine="157" />
 	</File>
-	<File name="FileIO.h" open="1" top="0" tabpos="14">
+	<File name="FileIO.h" open="0" top="0" tabpos="14">
 		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="Font.c" open="1" top="0" tabpos="2">
-		<Cursor position="611" topLine="2" />
+		<Cursor position="2730" topLine="69" />
 	</File>
 	<File name="Font.h" open="1" top="0" tabpos="3">
 		<Cursor position="362" topLine="0" />
 	</File>
-	<File name="Graphics/Graphics.c" open="1" top="0" tabpos="9">
+	<File name="Graphics/Graphics.c" open="0" top="0" tabpos="9">
 		<Cursor position="351" topLine="65" />
 	</File>
-	<File name="Graphics/Graphics.h" open="1" top="0" tabpos="11">
+	<File name="Graphics/Graphics.h" open="0" top="0" tabpos="11">
 		<Cursor position="1086" topLine="3" />
 	</File>
-	<File name="Graphics/image.c" open="1" top="0" tabpos="10">
-		<Cursor position="264" topLine="99" />
+	<File name="Graphics/image.c" open="0" top="0" tabpos="10">
+		<Cursor position="264" topLine="100" />
 	</File>
-	<File name="Graphics/init.c" open="1" top="0" tabpos="12">
+	<File name="Graphics/init.c" open="0" top="0" tabpos="12">
 		<Cursor position="215" topLine="3" />
 	</File>
-	<File name="Graphics/primitives.c" open="1" top="1" tabpos="13">
+	<File name="Graphics/primitives.c" open="0" top="0" tabpos="13">
 		<Cursor position="2190" topLine="0" />
 	</File>
 	<File name="Keyboard.c" open="1" top="0" tabpos="5">
@@ -34,17 +34,20 @@
 	<File name="Keyboard.h" open="0" top="0" tabpos="0">
 		<Cursor position="187" topLine="0" />
 	</File>
-	<File name="Macros.c" open="1" top="0" tabpos="6">
+	<File name="Macros.c" open="0" top="0" tabpos="6">
 		<Cursor position="1128" topLine="12" />
 	</File>
-	<File name="Main.c" open="1" top="0" tabpos="4">
-		<Cursor position="255" topLine="0" />
+	<File name="Main.c" open="1" top="1" tabpos="4">
+		<Cursor position="3701" topLine="129" />
 	</File>
 	<File name="Main.h" open="1" top="0" tabpos="7">
-		<Cursor position="855" topLine="13" />
+		<Cursor position="855" topLine="18" />
 	</File>
-	<File name="SOIL/SOIL.c" open="1" top="0" tabpos="8">
-		<Cursor position="44935" topLine="1548" />
+	<File name="Mouse.c" open="1" top="0" tabpos="6">
+		<Cursor position="253" topLine="0" />
+	</File>
+	<File name="SOIL/SOIL.c" open="0" top="0" tabpos="8">
+		<Cursor position="44935" topLine="1550" />
 	</File>
 	<File name="SOIL/stb_image_aug.c" open="0" top="0" tabpos="0">
 		<Cursor position="3684" topLine="60" />

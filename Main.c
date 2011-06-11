@@ -102,10 +102,59 @@ static int Lua_Main_exit(lua_State *L) {
 	/* the error handler checks for this message using check_for_exit() */
 	return luaL_error(L, "scrupp.exit");
 }
+const char* events[] = {"q", "kp", "kr", "mp", "mr"};
+static int Lua_Main_poll(lua_State *L) {
+    SDL_Event event;
+    //В общем, тут идет дохрена ненужных нам событий (штук 300), которые могут тормозить игру, их нужно пропускать.
+    while ( SDL_PollEvent( &event ) ) {
+        //printf("|");
+        switch ( event.type ) {
+        case SDL_QUIT:
+            lua_pushstring(L, events[0]);
+            done = 1;
+            return 1;
+
+        case SDL_KEYDOWN:
+            lua_pushstring(L, events[1]);
+            lua_pushstring(L, lua_keys[event.key.keysym.sym]);
+            lua_pushinteger(L, event.key.keysym.unicode);
+            return 3;
+
+        case SDL_KEYUP:
+            lua_pushstring(L, events[2]);
+            lua_pushstring(L, lua_keys[event.key.keysym.sym]);
+            lua_pushinteger(L, event.key.keysym.unicode);
+            return 3;
+
+        case SDL_MOUSEBUTTONDOWN:
+            lua_pushstring(L, events[3]);
+            lua_pushinteger(L, event.button.x);
+            lua_pushinteger(L, event.button.y);
+            lua_pushstring(L, buttonNames[event.button.button-1]);
+            return 4;
+
+        case SDL_MOUSEBUTTONUP:
+            lua_pushstring(L, events[4]);
+            lua_pushinteger(L, event.button.x);
+            lua_pushinteger(L, event.button.y);
+            lua_pushstring(L, buttonNames[event.button.button-1]);
+            return 4;
+
+        case SDL_VIDEORESIZE:
+            lua_pushstring(L, "rz");
+            lua_pushinteger(L, event.resize.w);
+            lua_pushinteger(L, event.resize.h);
+            return 3;
+        }
+    }
+    lua_pushnil(L);
+	return 1;
+}
 
 static const struct luaL_Reg mainlib [] = {
 	{"setDelta", Lua_Main_setDelta},
 	{"fps", Lua_Main_fps},
+	{"poll", Lua_Main_poll},
 	{"exit", Lua_Main_exit},
 	{NULL, NULL}
 };
@@ -132,7 +181,6 @@ static int luaopen_main(lua_State* L, const char *parent) {
 /* main - function - entry point */
 int main(int argc, char *argv[]) {
 	lua_State *L;
-	SDL_Event event;
 	Uint32 lastTick;	/* Last iteration's tick value */
 	Uint32 delta = 0;
 	int i, n, narg;
@@ -234,90 +282,14 @@ int main(int argc, char *argv[]) {
 			error(L, "Error: Table 'main' not found!\n");
 		}
 
-		/* at this point, the stack always contains
-		   the error function and the 'main' table */
-
 		/* main.render(delta) */
 		lua_getfield(L, -1, "render");
 		lua_pushinteger(L, delta);
-		if ((lua_pcall(L, 1, 0, -4) != 0) && !check_for_exit(L)) {
+		if ((lua_pcall(L, 1, 0, -1) != 0) && !check_for_exit(L)) {
 			error(L, "Error running main.render:\n\t%s\n", lua_tostring(L, -1));
 		}
 
 		SDL_GL_SwapBuffers();
-
-		while ( SDL_PollEvent( &event ) ) {
-			switch ( event.type ) {
-			case SDL_QUIT:
-				done = 1;
-				break;
-
-			case SDL_KEYDOWN:
-				lua_getfield(L, -1, "keypressed");
-				if (lua_isnil(L, -1)) {
-					lua_pop(L, 1); /* pop if it's nil */
-					break;
-				}
-				lua_pushstring(L, lua_keys[event.key.keysym.sym]);
-				lua_pushinteger(L, event.key.keysym.unicode);
-				if ((lua_pcall(L, 2, 0, -5) != 0) && !check_for_exit(L)) {
-					error(L, "Error running main.keypressed:\n\t%s\n", lua_tostring(L, -1));
-				}
-				break;
-
-			case SDL_KEYUP:
-				lua_getfield(L, -1, "keyreleased");
-				if (lua_isnil(L, -1)) {
-					lua_pop(L, 1); /* pop if it's nil */
-					break;
-				}
-				if ((lua_pcall(L, 0, 0, -4) != 0) && !check_for_exit(L)) {
-					error(L, "Error running main.keyreleased:\n\t%s\n", lua_tostring(L, -1));
-				}
-				break;
-
-			case SDL_MOUSEBUTTONDOWN:
-				lua_getfield(L, -1, "mousepressed");
-				if (lua_isnil(L, -1)) {
-					lua_pop(L, 1); /* pop if it's nil */
-					break;
-				}
-				lua_pushinteger(L, event.button.x);
-				lua_pushinteger(L, event.button.y);
-				lua_pushstring(L, buttonNames[event.button.button-1]);
-				if ((lua_pcall(L, 3, 0, -6) != 0) && !check_for_exit(L)) {
-					error(L, "Error running main.mousepressed:\n\t%s\n", lua_tostring(L, -1));
-				}
-				break;
-
-			case SDL_MOUSEBUTTONUP:
-				lua_getfield(L, -1, "mousereleased");
-				if (lua_isnil(L, -1)) {
-					lua_pop(L, 1); /* pop if it's nil */
-					break;
-				}
-				lua_pushinteger(L, event.button.x);
-				lua_pushinteger(L, event.button.y);
-				lua_pushstring(L, buttonNames[event.button.button-1]);
-				if ((lua_pcall(L, 3, 0, -6) != 0) && !check_for_exit(L)) {
-					error(L, "Error running main.mousereleased:\n\t%s\n", lua_tostring(L, -1));
-				}
-				break;
-
-			case SDL_VIDEORESIZE:
-				lua_getfield(L, -1, "resized");
-				if (lua_isnil(L, -1)) {
-					lua_pop(L, 1); /* pop if it's nil */
-					break;
-				}
-				lua_pushinteger(L, event.resize.w);
-				lua_pushinteger(L, event.resize.h);
-				if ((lua_pcall(L, 2, 0, -5) != 0) && !check_for_exit(L)) {
-					error(L, "Error running main.resized:\n\t%s\n", lua_tostring(L, -1));
-				}
-				break;
-			}
-		}
 
 		lua_pop(L, 1);	/* pop 'main' table */
 		delta = SDL_GetTicks() - lastTick;
@@ -325,6 +297,7 @@ int main(int argc, char *argv[]) {
 			SDL_Delay(minimumDelta - delta);
 			delta = SDL_GetTicks() - lastTick;
 		}
+		SDL_Delay(1);
 		FPS = 41.0f / (40.0f / FPS + (float)delta / 1000.0f);
 	}
 	lua_close(L);

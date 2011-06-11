@@ -10,11 +10,11 @@
 #include <string.h>
 
 const char* buttonNames [] = {
-	"left",
-	"middle",
-	"right",
-	"wheelUp",
-	"wheelDown"
+	"l",
+	"m",
+	"r",
+	"wu",
+	"wd"
 };
 
 static int Lua_Mouse_getX(lua_State *L) {

@@ -8,10 +8,10 @@
 #define __FONT_H__
 
 #include <SDL_opengl.h>
-
+#define GL_GLEXT_PROTOTYPES
 typedef struct Lua_FontChar
 {
-    GLuint list;
+    GLuint list, coord;
     float w;
 } Lua_FontChar;
 
