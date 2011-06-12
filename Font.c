@@ -193,7 +193,7 @@ static int Lua_Font_stringToLines(lua_State *L) {
     register char * str = (char *)luaL_checkstring(L, 1);
     char * buf = str;
     float maxw = (float)luaL_checknumber(L, 2), w = 0;
-    int i = 1, pos = 0, last_space;
+    int i = 1, pos = 0, last_space = 0;
     lua_newtable(L);
     if(*str)
 	do {
@@ -212,14 +212,17 @@ static int Lua_Font_stringToLines(lua_State *L) {
 	    {
 	        if(!last_space) last_space = pos;
             lua_pushlstring(L, buf, last_space);
+            printf("%d\n", last_space);
             lua_rawseti(L, -2, i++);
             pos = last_space = 0;
             buf = str + 1;
             w = 0;
 	    }
+	    pos++;
 	} while(*++str);
-	lua_pushlstring(L, buf, last_space);
+	lua_pushstring(L, buf);
     lua_rawseti(L, -2, i);
+    return 1;
 }
 
 static int Lua_Font_setCurrentFont(lua_State *L) {
@@ -273,6 +276,8 @@ static const struct luaL_Reg fontlib [] = {
 	{"printf", Lua_Font_printf},
 	{"stringWidth", Lua_Font_stringWidth},
 	{"stringHeight", Lua_Font_stringHeight},
+	{"stringToLines", Lua_Font_stringToLines},
+
 	{NULL, NULL}
 };
 
