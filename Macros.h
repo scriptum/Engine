@@ -16,6 +16,6 @@ void error (lua_State *L, const char *fmt, ...);
 /* Dumps the stack - DEBUG function */
 void stackDump (lua_State *L);
 
-int getint(lua_State *L, int *result, int key);
+//int getint(lua_State *L, int *result, int key);
 
 #endif /* __MACROS_H__ */

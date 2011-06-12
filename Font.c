@@ -3,6 +3,7 @@
 ** Library to use TrueType fonts with Scrupp
 ** See Copyright Notice in COPYRIGHT
 */
+#include "math.h"
 
 #include "Main.h"
 #include "Macros.h"
@@ -61,12 +62,14 @@ static int Lua_Font_height(lua_State *L) {
 }
 
 static int Lua_Font_stringWidth(lua_State *L) {
+    if(!currentFont) return luaL_error(L, "Call <yourfont>:select() first!");
     const char * str = luaL_checkstring(L, 1);
     lua_pushnumber(L, Lua_Font_Width(currentFont, str));
     return 1;
 }
 
 static int Lua_Font_stringHeight(lua_State *L) {
+    if(!currentFont) return luaL_error(L, "Call <yourfont>:select() first!");
     lua_pushinteger(L, currentFont->height);
 	return 1;
 }
@@ -87,15 +90,9 @@ static int Lua_Font_print(lua_State *L) {
     else if(strcmp(align, "right") == 0)  x = floor(x + width - Lua_Font_Width(currentFont, str));
     glTranslatef(x, y, 0);
     glScalef(currentFont->scale, currentFont->scale, 0);
-
     glBindTexture(GL_TEXTURE_2D, currentFont->texture);
     glEnable(GL_CULL_FACE);
 	glEnable(GL_TEXTURE_2D);
-    //printf("%d\n",currentFont->texture);
-    //glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-    //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    //glEnable(GL_ALPHA_TEST);
-//    char *last_space;
     if(*str)
 	do {
 	    switch(*str)
@@ -125,8 +122,75 @@ static int Lua_Font_print(lua_State *L) {
 	return 0;
 }
 
-static int Lua_Font_stringToLines(lua_State *L) {
+static int Lua_Font_printf(lua_State *L) {
+    if(!currentFont) return luaL_error(L, "Call <yourfont>:select() first!");
     register const char * str = luaL_checkstring(L, 1);
+    float x = (float)luaL_checknumber(L, 2);
+    float y = (float)luaL_checknumber(L, 3);
+    float maxw = (float)luaL_checknumber(L, 4);
+    const char *align = lua_tostring(L, 5);
+    float w = 0, buf1, buf2;
+    unsigned char c;
+    Lua_FontChar *ch;
+    glPushMatrix();
+    int buf = 0;
+    int i = 0, pos = 0, last_space, j;
+    glTranslatef(x, y, 0);
+    glScalef(currentFont->scale, currentFont->scale, 0);
+    glBindTexture(GL_TEXTURE_2D, currentFont->texture);
+    glEnable(GL_CULL_FACE);
+	glEnable(GL_TEXTURE_2D);
+    while(str[i]) {
+        c = (unsigned char)str[i];
+	    switch(c)
+	    {
+            case '\t':
+                w += currentFont->chars[32].w * 8;
+                last_space = pos;
+                break;
+            case ' ':
+                last_space = pos;
+            default:
+                w += currentFont->chars[c].w;
+	    }
+	    if(w > maxw || c == '\n')
+	    {
+	        if(!last_space) last_space = pos;
+	        j = buf;
+	        w = 0;
+            while(buf < last_space) {
+                c = (unsigned char)str[buf];
+                if(c == '\t')
+                {
+                    glTranslatef(currentFont->chars[32].w * 8, 0, 0);
+                    w += currentFont->chars[32].w * 8;
+                    continue;
+                }
+                ch = &currentFont->chars[c];
+                glCallList(ch->list);
+                glTranslatef(ch->w, 0, 0);
+                w += ch->w;
+            }
+            glTranslatef(-w, currentFont->height, 0);
+            pos = last_space = 0;
+            buf = i + 1;
+            w = 0;
+	    }
+	    i++;
+	}
+//    if(align)
+//    if(strcmp(align, "center") == 0) x = floor(x + (width - Lua_Font_Width(currentFont, str))/2.0f);
+//    else if(strcmp(align, "right") == 0)  x = floor(x + width - Lua_Font_Width(currentFont, str));
+
+    glPopMatrix();
+    glDisable(GL_CULL_FACE);
+	glDisable(GL_TEXTURE_2D);
+	return 0;
+}
+
+static int Lua_Font_stringToLines(lua_State *L) {
+    if(!currentFont) return luaL_error(L, "Call <yourfont>:select() first!");
+    register char * str = (char *)luaL_checkstring(L, 1);
     char * buf = str;
     float maxw = (float)luaL_checknumber(L, 2), w = 0;
     int i = 1, pos = 0, last_space;
@@ -206,6 +270,7 @@ static int font_tostring(lua_State *L) {
 static const struct luaL_Reg fontlib [] = {
 	{"addFont", Lua_Font_load},
 	{"print", Lua_Font_print},
+	{"printf", Lua_Font_printf},
 	{"stringWidth", Lua_Font_stringWidth},
 	{"stringHeight", Lua_Font_stringHeight},
 	{NULL, NULL}

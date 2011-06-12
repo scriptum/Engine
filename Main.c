@@ -151,10 +151,16 @@ static int Lua_Main_poll(lua_State *L) {
 	return 1;
 }
 
+static int Lua_Main_clear(lua_State *L) {
+	glClear( GL_COLOR_BUFFER_BIT );
+	return 0;
+}
+
 static const struct luaL_Reg mainlib [] = {
 	{"setDelta", Lua_Main_setDelta},
 	{"fps", Lua_Main_fps},
 	{"poll", Lua_Main_poll},
+	{"clear", Lua_Main_clear},
 	{"exit", Lua_Main_exit},
 	{NULL, NULL}
 };
@@ -271,7 +277,7 @@ int main(int argc, char *argv[]) {
 	while ( !done ) {
 		lastTick = SDL_GetTicks();
 
-		glClear( GL_COLOR_BUFFER_BIT );
+		//glClear( GL_COLOR_BUFFER_BIT );
 		glLoadIdentity();
 
 		/* maybe the 'main' table has changed
@@ -297,7 +303,7 @@ int main(int argc, char *argv[]) {
 			SDL_Delay(minimumDelta - delta);
 			delta = SDL_GetTicks() - lastTick;
 		}
-		SDL_Delay(1);
+		//SDL_Delay(1);
 		FPS = 41.0f / (40.0f / FPS + (float)delta / 1000.0f);
 	}
 	lua_close(L);

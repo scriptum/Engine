@@ -68,15 +68,15 @@ void stackDump (lua_State *L) {
 	}
 	puts("\n");  /* end the listing */
 }
-
-int getint(lua_State *L, int *result, int key) {
-	lua_pushinteger(L, key);
-	lua_gettable(L, -2);
-	if (!lua_isnumber(L, -1)) {
-		lua_pop(L, 1);
-		return 0;
-	}
-	*result = (int)lua_tonumber(L, -1);
-	lua_pop(L, 1);
-	return 1;
-}
+//
+//int getint(lua_State *L, int *result, int key) {
+//	lua_pushinteger(L, key);
+//	lua_gettable(L, -2);
+//	if (!lua_isnumber(L, -1)) {
+//		lua_pop(L, 1);
+//		return 0;
+//	}
+//	*result = (int)lua_tonumber(L, -1);
+//	lua_pop(L, 1);
+//	return 1;
+//}
