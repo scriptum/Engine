@@ -74,21 +74,25 @@ static int Lua_Font_stringHeight(lua_State *L) {
 	return 1;
 }
 
+#define ALIGN(width) if(align)\
+    if(strcmp(align, "center") == 0) glTranslatef(floor((maxw - width)/2.0f), 0, 0);\
+    else if(strcmp(align, "right") == 0) glTranslatef(floor(maxw - width), 0, 0);
+
 static int Lua_Font_print(lua_State *L) {
     if(!currentFont) return luaL_error(L, "Call <yourfont>:select() first!");
     register const char * str = luaL_checkstring(L, 1);
     float x = (float)luaL_checknumber(L, 2);
     float y = (float)luaL_checknumber(L, 3);
-    float width = (float)lua_tonumber(L, 4);
+    float maxw = (float)lua_tonumber(L, 4);
     const char *align = lua_tostring(L, 5);
-    float w = 0, buf1, buf2;
+    float w = 0;
     unsigned char c;
     Lua_FontChar *ch;
     glPushMatrix();
-    if(align)
-    if(strcmp(align, "center") == 0) x = floor(x + (width - Lua_Font_Width(currentFont, str))/2.0f);
-    else if(strcmp(align, "right") == 0)  x = floor(x + width - Lua_Font_Width(currentFont, str));
     glTranslatef(x, y, 0);
+
+    ALIGN(Lua_Font_Width(currentFont, str))
+
     glScalef(currentFont->scale, currentFont->scale, 0);
     glBindTexture(GL_TEXTURE_2D, currentFont->texture);
     glEnable(GL_CULL_FACE);
@@ -122,65 +126,83 @@ static int Lua_Font_print(lua_State *L) {
 	return 0;
 }
 
+#define PRINT_LINES(A,B) \
+int i = 0, last_space = 0, buf = 0;\
+float w = 0;\
+unsigned char c;\
+while(str[i]) {\
+    c = (unsigned char)str[i];\
+    switch(c)\
+    {\
+        case '\t':\
+            w += currentFont->chars[32].w * 8;\
+            last_space = i;\
+            break;\
+        case ' ':\
+            last_space = i;\
+        default:\
+            w += currentFont->chars[c].w;\
+    }\
+    if(w > maxw || c == '\n')\
+    {\
+        if(!last_space || c == '\n') last_space = i;\
+        A\
+        i = last_space;\
+        buf = last_space + 1;\
+        last_space = 0;\
+        w = 0;\
+    }\
+    i++;\
+}\
+B
+
 static int Lua_Font_printf(lua_State *L) {
     if(!currentFont) return luaL_error(L, "Call <yourfont>:select() first!");
     register const char * str = luaL_checkstring(L, 1);
     float x = (float)luaL_checknumber(L, 2);
     float y = (float)luaL_checknumber(L, 3);
-    float maxw = (float)luaL_checknumber(L, 4);
+    float maxw = (float)luaL_checknumber(L, 4) / currentFont->scale;
     const char *align = lua_tostring(L, 5);
-    float w = 0, buf1, buf2;
-    unsigned char c;
     Lua_FontChar *ch;
     glPushMatrix();
-    int buf = 0;
-    int i = 0, pos = 0, last_space, j;
     glTranslatef(x, y, 0);
     glScalef(currentFont->scale, currentFont->scale, 0);
     glBindTexture(GL_TEXTURE_2D, currentFont->texture);
     glEnable(GL_CULL_FACE);
 	glEnable(GL_TEXTURE_2D);
-    while(str[i]) {
-        c = (unsigned char)str[i];
-	    switch(c)
-	    {
-            case '\t':
-                w += currentFont->chars[32].w * 8;
-                last_space = pos;
-                break;
-            case ' ':
-                last_space = pos;
-            default:
-                w += currentFont->chars[c].w;
-	    }
-	    if(w > maxw || c == '\n')
-	    {
-	        if(!last_space) last_space = pos;
-	        j = buf;
-	        w = 0;
-            while(buf < last_space) {
-                c = (unsigned char)str[buf];
-                if(c == '\t')
-                {
-                    glTranslatef(currentFont->chars[32].w * 8, 0, 0);
-                    w += currentFont->chars[32].w * 8;
-                    continue;
-                }
-                ch = &currentFont->chars[c];
-                glCallList(ch->list);
-                glTranslatef(ch->w, 0, 0);
-                w += ch->w;
-            }
-            glTranslatef(-w, currentFont->height, 0);
-            pos = last_space = 0;
-            buf = i + 1;
-            w = 0;
-	    }
-	    i++;
-	}
-//    if(align)
-//    if(strcmp(align, "center") == 0) x = floor(x + (width - Lua_Font_Width(currentFont, str))/2.0f);
-//    else if(strcmp(align, "right") == 0)  x = floor(x + width - Lua_Font_Width(currentFont, str));
+
+	PRINT_LINES(
+	ALIGN(w)
+    w = 0;
+    while(buf < last_space) {
+        c = (unsigned char)str[buf];
+        if(c == '\t')
+        {
+            glTranslatef(currentFont->chars[32].w * 8, 0, 0);
+            w += currentFont->chars[32].w * 8;
+            continue;
+        }
+        ch = &currentFont->chars[c];
+        glCallList(ch->list);
+        glTranslatef(ch->w, 0, 0);
+        w += ch->w;
+        buf++;
+    }
+    glTranslatef(-w, currentFont->height, 0);
+    ,
+    ALIGN(w)
+	while(buf < i) {
+        c = (unsigned char)str[buf];
+        if(c == '\t')
+        {
+            glTranslatef(currentFont->chars[32].w * 8, 0, 0);
+            continue;
+        }
+        ch = &currentFont->chars[c];
+        glCallList(ch->list);
+        glTranslatef(ch->w, 0, 0);
+        buf++;
+    })
 
     glPopMatrix();
     glDisable(GL_CULL_FACE);
@@ -191,37 +213,15 @@ static int Lua_Font_printf(lua_State *L) {
 static int Lua_Font_stringToLines(lua_State *L) {
     if(!currentFont) return luaL_error(L, "Call <yourfont>:select() first!");
     register char * str = (char *)luaL_checkstring(L, 1);
-    char * buf = str;
-    float maxw = (float)luaL_checknumber(L, 2), w = 0;
-    int i = 1, pos = 0, last_space = 0;
+    float maxw = (float)luaL_checknumber(L, 2) / currentFont->scale;
     lua_newtable(L);
-    if(*str)
-	do {
-	    switch(*str)
-	    {
-            case '\t':
-                w += currentFont->chars[32].w * 8;
-                last_space = pos;
-                break;
-            case ' ':
-                last_space = pos;
-            default:
-                w += currentFont->chars[*str].w;
-	    }
-	    if(w > maxw || *str == '\n')
-	    {
-	        if(!last_space) last_space = pos;
-            lua_pushlstring(L, buf, last_space);
-            printf("%d\n", last_space);
-            lua_rawseti(L, -2, i++);
-            pos = last_space = 0;
-            buf = str + 1;
-            w = 0;
-	    }
-	    pos++;
-	} while(*++str);
-	lua_pushstring(L, buf);
-    lua_rawseti(L, -2, i);
+    int j = 1;
+
+    PRINT_LINES(lua_pushlstring(L, str + buf, last_space - buf);
+            lua_rawseti(L, -2, j++);,
+            lua_pushstring(L, str + buf);
+            lua_rawseti(L, -2, j);)
+
     return 1;
 }
 
