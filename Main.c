@@ -102,7 +102,7 @@ static int Lua_Main_exit(lua_State *L) {
 	/* the error handler checks for this message using check_for_exit() */
 	return luaL_error(L, "scrupp.exit");
 }
-const char* events[] = {"q", "kp", "kr", "mp", "mr"};
+
 static int Lua_Main_poll(lua_State *L) {
     SDL_Event event;
     //В общем, тут идет дохрена ненужных нам событий (штук 300), которые могут тормозить игру, их нужно пропускать.

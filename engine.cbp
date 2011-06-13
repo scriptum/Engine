@@ -40,8 +40,9 @@
 		</Compiler>
 		<Linker>
 			<Add option="`sdl-config --libs`" />
-			<Add option="-lSDL_ttf -lSDL_mixer -lSDL_image -lphysfs  -llua -lm   -lGL  -lm -lcairo" />
+			<Add option="-lSDL_ttf -lSDL_mixer -lSDL_image -lphysfs -lGL -llua" />
 			<Add option="-I/usr/include" />
+			<Add option="-I./lua" />
 		</Linker>
 		<Unit filename="FileIO.c">
 			<Option compilerVar="CC" />
@@ -102,6 +103,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Sound.h" />
+		<Unit filename="Thread.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Thread.h" />
 		<Unit filename="physfsrwops.c">
 			<Option compilerVar="CC" />
 		</Unit>

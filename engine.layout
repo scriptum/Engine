@@ -2,16 +2,16 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
 	<File name="FileIO.c" open="1" top="0" tabpos="1">
-		<Cursor position="5009" topLine="157" />
+		<Cursor position="10911" topLine="328" />
 	</File>
 	<File name="FileIO.h" open="0" top="0" tabpos="14">
 		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="Font.c" open="1" top="0" tabpos="2">
-		<Cursor position="2730" topLine="69" />
+		<Cursor position="1532" topLine="12" />
 	</File>
 	<File name="Font.h" open="1" top="0" tabpos="3">
-		<Cursor position="362" topLine="0" />
+		<Cursor position="228" topLine="0" />
 	</File>
 	<File name="Graphics/Graphics.c" open="0" top="0" tabpos="9">
 		<Cursor position="351" topLine="65" />
@@ -23,7 +23,7 @@
 		<Cursor position="264" topLine="100" />
 	</File>
 	<File name="Graphics/init.c" open="0" top="0" tabpos="12">
-		<Cursor position="215" topLine="3" />
+		<Cursor position="1712" topLine="12" />
 	</File>
 	<File name="Graphics/primitives.c" open="0" top="0" tabpos="13">
 		<Cursor position="2190" topLine="0" />
@@ -35,19 +35,19 @@
 		<Cursor position="187" topLine="0" />
 	</File>
 	<File name="Macros.c" open="0" top="0" tabpos="6">
-		<Cursor position="1128" topLine="12" />
+		<Cursor position="1128" topLine="34" />
 	</File>
-	<File name="Main.c" open="1" top="1" tabpos="4">
-		<Cursor position="3701" topLine="129" />
+	<File name="Main.c" open="1" top="0" tabpos="4">
+		<Cursor position="8066" topLine="199" />
 	</File>
 	<File name="Main.h" open="1" top="0" tabpos="7">
-		<Cursor position="855" topLine="18" />
+		<Cursor position="1071" topLine="19" />
 	</File>
 	<File name="Mouse.c" open="1" top="0" tabpos="6">
-		<Cursor position="253" topLine="0" />
+		<Cursor position="1312" topLine="35" />
 	</File>
-	<File name="SOIL/SOIL.c" open="0" top="0" tabpos="8">
-		<Cursor position="44935" topLine="1550" />
+	<File name="SOIL/SOIL.c" open="1" top="1" tabpos="10">
+		<Cursor position="44916" topLine="1549" />
 	</File>
 	<File name="SOIL/stb_image_aug.c" open="0" top="0" tabpos="0">
 		<Cursor position="3684" topLine="60" />
@@ -57,5 +57,11 @@
 	</File>
 	<File name="Sound.c" open="0" top="0" tabpos="0">
 		<Cursor position="1306" topLine="306" />
+	</File>
+	<File name="Thread.c" open="1" top="0" tabpos="8">
+		<Cursor position="1916" topLine="128" />
+	</File>
+	<File name="Thread.h" open="1" top="0" tabpos="9">
+		<Cursor position="60" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>

@@ -168,6 +168,7 @@ _G["print"] = function(...)
 	end
 	table.insert(Console.lines, str)
 end
+local screen_scale = screen_scale or 1
 Console = E:new()
 :size(800, 200)
 :move(0, 600 + 31 / screen_scale)

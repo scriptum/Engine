@@ -48,7 +48,9 @@ enum{
 	SOIL_CAPABILITY_PRESENT = 1
 };
 static int has_cubemap_capability = SOIL_CAPABILITY_UNKNOWN;
+#ifndef NO_CUBEMAP
 int query_cubemap_capability( void );
+#endif
 #define SOIL_TEXTURE_WRAP_R					0x8072
 #define SOIL_CLAMP_TO_EDGE					0x812F
 #define SOIL_NORMAL_MAP						0x8511
@@ -103,7 +105,7 @@ unsigned int
 		unsigned int opengl_texture_target,
 		unsigned int texture_check_size_enum
 	);
-
+#ifndef STBI_NO_STDIO
 /*	and the code magic begins here [8^)	*/
 unsigned int
 	SOIL_load_OGL_texture
@@ -156,6 +158,9 @@ unsigned int
 	/*	and return the handle, such as it is	*/
 	return tex_id;
 }
+#endif
+
+#ifndef STBI_NO_HDR
 
 unsigned int
 	SOIL_load_OGL_HDR_texture
@@ -208,6 +213,7 @@ unsigned int
 	/*	and return the handle, such as it is	*/
 	return tex_id;
 }
+#endif
 
 unsigned int
 	SOIL_load_OGL_texture_from_memory
@@ -266,7 +272,7 @@ unsigned int
 	/*	and return the handle, such as it is	*/
 	return tex_id;
 }
-#ifdef CUBEMAP
+#ifndef NO_CUBEMAP
 unsigned int
 	SOIL_load_OGL_cubemap
 	(
@@ -1366,7 +1372,7 @@ unsigned int
 	SOIL_free_image_data( img );
 	return tex_id;
 }
-
+#ifndef STBI_NO_STDIO
 int
 	SOIL_save_screenshot
 	(
@@ -1443,7 +1449,7 @@ unsigned char*
 	}
 	return result;
 }
-
+#endif
 unsigned char*
 	SOIL_load_image_from_memory
 	(
@@ -1466,7 +1472,7 @@ unsigned char*
 	}
 	return result;
 }
-
+#ifndef STBI_NO_STDIO
 int
 	SOIL_save_image
 	(
@@ -1513,7 +1519,7 @@ int
 	}
 	return save_result;
 }
-
+#endif
 void
 	SOIL_free_image_data
 	(
@@ -1603,7 +1609,9 @@ unsigned int SOIL_direct_load_DDS_from_memory(
 	width = header.dwWidth;
 	height = header.dwHeight;
 	uncompressed = 1 - (header.sPixelFormat.dwFlags & DDPF_FOURCC) / DDPF_FOURCC;
+	#ifndef NO_CUBEMAP
 	cubemap = (header.sCaps.dwCaps2 & DDSCAPS2_CUBEMAP) / DDSCAPS2_CUBEMAP;
+	#endif
 	if( uncompressed )
 	{
 		S3TC_type = GL_RGB;
@@ -1641,6 +1649,7 @@ unsigned int SOIL_direct_load_DDS_from_memory(
 		}
 		DDS_main_size = ((width+3)>>2)*((height+3)>>2)*block_size;
 	}
+	#ifndef NO_CUBEMAP
 	if( cubemap )
 	{
 		/* does the user want a cubemap?	*/
@@ -1673,6 +1682,7 @@ unsigned int SOIL_direct_load_DDS_from_memory(
 		ogl_target_end =   GL_TEXTURE_2D;
 		opengl_texture_type = GL_TEXTURE_2D;
 	}
+	#endif
 	if( (header.sCaps.dwCaps1 & DDSCAPS_MIPMAP) && (header.dwMipMapCount > 1) )
 	{
 		int shift_offset;
@@ -1825,6 +1835,7 @@ quick_exit:
 	return tex_ID;
 }
 
+#ifndef STBI_NO_STDIO
 unsigned int SOIL_direct_load_DDS(
 		const char *filename,
 		unsigned int reuse_texture_ID,
@@ -1872,7 +1883,7 @@ unsigned int SOIL_direct_load_DDS(
 	SOIL_free_image_data( buffer );
 	return tex_ID;
 }
-
+#endif
 int query_NPOT_capability( void )
 {
 	/*	check for the capability	*/
@@ -1925,6 +1936,7 @@ int query_tex_rectangle_capability( void )
 	return has_tex_rectangle_capability;
 }
 
+#ifndef NO_CUBEMAP
 int query_cubemap_capability( void )
 {
 	/*	check for the capability	*/
@@ -1950,6 +1962,7 @@ int query_cubemap_capability( void )
 	/*	let the user know if we can do cubemaps or not	*/
 	return has_cubemap_capability;
 }
+#endif
 
 int query_DXT_capability( void )
 {
