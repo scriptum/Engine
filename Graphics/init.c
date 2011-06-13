@@ -14,7 +14,7 @@
 SDL_Surface *screen;
 
 int Lua_Graphics_init(lua_State *L) {
-	const char* appName = luaL_checkstring(L, 1);
+	appName = (char *)luaL_checkstring(L, 1);
 	int width = luaL_checkint(L, 2);
 	int height = luaL_checkint(L, 3);
 	char bpp = luaL_checkint(L, 4);
@@ -60,6 +60,7 @@ int Lua_Graphics_init(lua_State *L) {
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glDisable(GL_DEPTH_TEST);
+
 	glViewport( 0, 0, width, height );
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();

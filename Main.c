@@ -13,7 +13,6 @@
 #include "Mouse.h"
 #include "Keyboard.h"
 #include "Sound.h"
-#include "Movie.h"
 
 /* cairo binding lua-oocairo */
 //#include "lua-oocairo/oocairo.h"
@@ -25,6 +24,7 @@
 
 int done = 0;
 float FPS = 60;
+
 
 /* minimum delta between frames in milliseconds */
 Uint32 minimumDelta = 10;
@@ -110,31 +110,31 @@ static int Lua_Main_poll(lua_State *L) {
         //printf("|");
         switch ( event.type ) {
         case SDL_QUIT:
-            lua_pushstring(L, events[0]);
+            lua_pushstring(L, "q");
             done = 1;
             return 1;
 
         case SDL_KEYDOWN:
-            lua_pushstring(L, events[1]);
+            lua_pushstring(L, "kd");
             lua_pushstring(L, lua_keys[event.key.keysym.sym]);
             lua_pushinteger(L, event.key.keysym.unicode);
             return 3;
 
         case SDL_KEYUP:
-            lua_pushstring(L, events[2]);
+            lua_pushstring(L, "ku");
             lua_pushstring(L, lua_keys[event.key.keysym.sym]);
             lua_pushinteger(L, event.key.keysym.unicode);
             return 3;
 
         case SDL_MOUSEBUTTONDOWN:
-            lua_pushstring(L, events[3]);
+            lua_pushstring(L, "mp");
             lua_pushinteger(L, event.button.x);
             lua_pushinteger(L, event.button.y);
             lua_pushstring(L, buttonNames[event.button.button-1]);
             return 4;
 
         case SDL_MOUSEBUTTONUP:
-            lua_pushstring(L, events[4]);
+            lua_pushstring(L, "mr");
             lua_pushinteger(L, event.button.x);
             lua_pushinteger(L, event.button.y);
             lua_pushstring(L, buttonNames[event.button.button-1]);
@@ -165,7 +165,7 @@ static const struct luaL_Reg mainlib [] = {
 	{NULL, NULL}
 };
 
-static int luaopen_main(lua_State* L, const char *parent) {
+int luaopen_main(lua_State* L, const char *parent) {
 	luaL_register(L, parent, mainlib);	/* leaves table on top of stack */
 	lua_pushliteral(L, "VERSION");
 	lua_pushliteral(L, VERSION);
@@ -202,6 +202,8 @@ int main(int argc, char *argv[]) {
 		n = argc - 1;
 	}
 
+	thread_init();
+
 	L = luaL_newstate();	/* initialize Lua */
 	luaL_openlibs(L);	/* load Lua base libraries */
 
@@ -216,6 +218,7 @@ int main(int argc, char *argv[]) {
 	luaopen_sound(L, NULL);
 	luaopen_mouse(L, NULL);
 	luaopen_keyboard(L, NULL);
+	luaopen_thread(L, NULL);
 	//luaopen_movie(L, NULL);
 	lua_setglobal(L, NAMESPACE);
 
@@ -291,7 +294,7 @@ int main(int argc, char *argv[]) {
 		/* main.render(delta) */
 		lua_getfield(L, -1, "render");
 		lua_pushinteger(L, delta);
-		if ((lua_pcall(L, 1, 0, -1) != 0) && !check_for_exit(L)) {
+		if ((lua_pcall(L, 1, 0, -4) != 0) && !check_for_exit(L)) {
 			error(L, "Error running main.render:\n\t%s\n", lua_tostring(L, -1));
 		}
 
@@ -304,7 +307,7 @@ int main(int argc, char *argv[]) {
 			delta = SDL_GetTicks() - lastTick;
 		}
 		//SDL_Delay(1);
-		FPS = 41.0f / (40.0f / FPS + (float)delta / 1000.0f);
+		FPS = (FPS + 1) / (1 + (float)delta / 1000.0f);
 	}
 	lua_close(L);
 	return 0;

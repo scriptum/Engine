@@ -17,19 +17,19 @@ const char* buttonNames [] = {
 	"wd"
 };
 
-static int Lua_Mouse_getX(lua_State *L) {
-	int x;
-	SDL_GetMouseState(&x, NULL);
-	lua_pushinteger(L, x);
-	return 1;
-}
-
-static int Lua_Mouse_getY(lua_State *L) {
-	int y;
-	SDL_GetMouseState(NULL, &y);
-	lua_pushinteger(L, y);
-	return 1;
-}
+//static int Lua_Mouse_getX(lua_State *L) {
+//	int x;
+//	SDL_GetMouseState(&x, NULL);
+//	lua_pushinteger(L, x);
+//	return 1;
+//}
+//
+//static int Lua_Mouse_getY(lua_State *L) {
+//	int y;
+//	SDL_GetMouseState(NULL, &y);
+//	lua_pushinteger(L, y);
+//	return 1;
+//}
 
 static int Lua_Mouse_getPos(lua_State *L) {
 	int x, y;
@@ -55,8 +55,8 @@ static int Lua_Mouse_isDown(lua_State *L) {
 }
 
 static const struct luaL_Reg mouselib [] = {
-	{"getMouseX", Lua_Mouse_getX},
-	{"getMouseY", Lua_Mouse_getY},
+//	{"getMouseX", Lua_Mouse_getX},
+//	{"getMouseY", Lua_Mouse_getY},
 	{"getMousePos", Lua_Mouse_getPos},
 	{"mouseButtonIsDown", Lua_Mouse_isDown},
 	{NULL, NULL}

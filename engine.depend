@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1307560317 source:/home/rpg/engine/engine/FileIO.c
+1307881839 source:/home/rpg/engine/engine/FileIO.c
 	"Main.h"
 	"Macros.h"
 	"FileIO.h"
@@ -9,7 +9,7 @@
 	<stdio.h>
 	<physfs.h>
 
-1307515754 /home/rpg/engine/engine/Main.h
+1307917061 /home/rpg/engine/engine/Main.h
 	<stdarg.h>
 	<stdlib.h>
 	<stdio.h>
@@ -205,9 +205,13 @@
 
 1307845566 /home/rpg/engine/engine/Macros.h
 
-1236383148 /home/rpg/engine/engine/FileIO.h
+1307875575 /home/rpg/engine/engine/FileIO.h
+	<windows.h>
+	<direct.h>
+	<sys/param.h>
+	<unistd.h>
 
-1307848295 source:/home/rpg/engine/engine/Font.c
+1307916580 source:/home/rpg/engine/engine/Font.c
 	"math.h"
 	"Main.h"
 	"Macros.h"
@@ -275,7 +279,7 @@
 	<windows.h>
 	<Carbon/Carbon.h>
 
-1307844123 source:/home/rpg/engine/engine/Main.c
+1307924487 source:/home/rpg/engine/engine/Main.c
 	"Main.h"
 	"Macros.h"
 	"FileIO.h"
@@ -284,7 +288,6 @@
 	"Mouse.h"
 	"Keyboard.h"
 	"Sound.h"
-	"Movie.h"
 	<string.h>
 	<SDL_opengl.h>
 
@@ -311,7 +314,7 @@
 1192422065 /home/rpg/engine/engine/luasocket/mime.h
 	"lua.h"
 
-1307725484 source:/home/rpg/engine/engine/Mouse.c
+1307955785 source:/home/rpg/engine/engine/Mouse.c
 	"Main.h"
 	"Mouse.h"
 	<string.h>
@@ -590,7 +593,7 @@
 	"Graphics.h"
 	"../physfsrwops.h"
 
-1307567746 source:/home/rpg/engine/engine/Graphics/init.c
+1307926041 source:/home/rpg/engine/engine/Graphics/init.c
 	<SDL_opengl.h>
 	<SDL_image.h>
 	<math.h>
@@ -609,4 +612,448 @@
 	"../Macros.h"
 	"Graphics.h"
 	"../physfsrwops.h"
+
+1307954738 source:/home/rpg/engine/engine/Thread.c
+	"Main.h"
+	"Macros.h"
+	"FileIO.h"
+	"Font.h"
+	"Graphics/Graphics.h"
+	"Mouse.h"
+	"Keyboard.h"
+	"Sound.h"
+	"Thread.h"
+
+1307920986 /home/rpg/engine/engine/Thread.h
+	"lua.h"
+
+1215196878 source:/home/rpg/engine/engine/lua/lapi.c
+	<assert.h>
+	<math.h>
+	<stdarg.h>
+	<string.h>
+	"lua.h"
+	"lapi.h"
+	"ldebug.h"
+	"ldo.h"
+	"lfunc.h"
+	"lgc.h"
+	"lmem.h"
+	"lobject.h"
+	"lstate.h"
+	"lstring.h"
+	"ltable.h"
+	"ltm.h"
+	"lundump.h"
+	"lvm.h"
+
+1218029412 /home/rpg/engine/engine/lua/lua.h
+	<stdarg.h>
+	<stddef.h>
+	"luaconf.h"
+
+1202747108 /home/rpg/engine/engine/lua/luaconf.h
+	<limits.h>
+	<stddef.h>
+	<unistd.h>
+	<io.h>
+	<stdio.h>
+	<stdio.h>
+	<readline/readline.h>
+	<readline/history.h>
+	<assert.h>
+	<math.h>
+	<unistd.h>
+
+1198760545 /home/rpg/engine/engine/lua/lapi.h
+	"lobject.h"
+
+1218029388 /home/rpg/engine/engine/lua/lobject.h
+	<stdarg.h>
+	"llimits.h"
+	"lua.h"
+
+1307911431 /home/rpg/engine/engine/lua/llimits.h
+	<limits.h>
+	<stddef.h>
+	"lua.h"
+	"../Main.h"
+
+1198760545 /home/rpg/engine/engine/lua/ldebug.h
+	"lstate.h"
+
+1199373639 /home/rpg/engine/engine/lua/lstate.h
+	"lua.h"
+	"lobject.h"
+	"ltm.h"
+	"lzio.h"
+
+1198760545 /home/rpg/engine/engine/lua/ltm.h
+	"lobject.h"
+
+1198760545 /home/rpg/engine/engine/lua/lzio.h
+	"lua.h"
+	"lmem.h"
+
+1198760545 /home/rpg/engine/engine/lua/lmem.h
+	<stddef.h>
+	"llimits.h"
+	"lua.h"
+
+1198760545 /home/rpg/engine/engine/lua/ldo.h
+	"lobject.h"
+	"lstate.h"
+	"lzio.h"
+
+1198760545 /home/rpg/engine/engine/lua/lfunc.h
+	"lobject.h"
+
+1198760545 /home/rpg/engine/engine/lua/lgc.h
+	"lobject.h"
+
+1198760545 /home/rpg/engine/engine/lua/lstring.h
+	"lgc.h"
+	"lobject.h"
+	"lstate.h"
+
+1198760545 /home/rpg/engine/engine/lua/ltable.h
+	"lobject.h"
+
+1198760545 /home/rpg/engine/engine/lua/lundump.h
+	"lobject.h"
+	"lzio.h"
+
+1198760545 /home/rpg/engine/engine/lua/lvm.h
+	"ldo.h"
+	"lobject.h"
+	"ltm.h"
+
+1200921651 source:/home/rpg/engine/engine/lua/lauxlib.c
+	<ctype.h>
+	<errno.h>
+	<stdarg.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"lua.h"
+	"lauxlib.h"
+
+1198760545 /home/rpg/engine/engine/lua/lauxlib.h
+	<stddef.h>
+	<stdio.h>
+	"lua.h"
+
+1203007582 source:/home/rpg/engine/engine/lua/lbaselib.c
+	<ctype.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"lua.h"
+	"lauxlib.h"
+	"lualib.h"
+
+1198760545 /home/rpg/engine/engine/lua/lualib.h
+	"lua.h"
+
+1198855943 source:/home/rpg/engine/engine/lua/lcode.c
+	<stdlib.h>
+	"lua.h"
+	"lcode.h"
+	"ldebug.h"
+	"ldo.h"
+	"lgc.h"
+	"llex.h"
+	"lmem.h"
+	"lobject.h"
+	"lopcodes.h"
+	"lparser.h"
+	"ltable.h"
+
+1198760545 /home/rpg/engine/engine/lua/lcode.h
+	"llex.h"
+	"lobject.h"
+	"lopcodes.h"
+	"lparser.h"
+
+1198760545 /home/rpg/engine/engine/lua/llex.h
+	"lobject.h"
+	"lzio.h"
+
+1198760545 /home/rpg/engine/engine/lua/lopcodes.h
+	"llimits.h"
+
+1198760545 /home/rpg/engine/engine/lua/lparser.h
+	"llimits.h"
+	"lobject.h"
+	"lzio.h"
+
+1200921081 source:/home/rpg/engine/engine/lua/ldblib.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"lua.h"
+	"lauxlib.h"
+	"lualib.h"
+
+1210265786 source:/home/rpg/engine/engine/lua/ldebug.c
+	<stdarg.h>
+	<stddef.h>
+	<string.h>
+	"lua.h"
+	"lapi.h"
+	"lcode.h"
+	"ldebug.h"
+	"ldo.h"
+	"lfunc.h"
+	"lobject.h"
+	"lopcodes.h"
+	"lstate.h"
+	"lstring.h"
+	"ltable.h"
+	"ltm.h"
+	"lvm.h"
+
+1200695482 source:/home/rpg/engine/engine/lua/ldo.c
+	<setjmp.h>
+	<stdlib.h>
+	<string.h>
+	"lua.h"
+	"ldebug.h"
+	"ldo.h"
+	"lfunc.h"
+	"lgc.h"
+	"lmem.h"
+	"lobject.h"
+	"lopcodes.h"
+	"lparser.h"
+	"lstate.h"
+	"lstring.h"
+	"ltable.h"
+	"ltm.h"
+	"lundump.h"
+	"lvm.h"
+	"lzio.h"
+
+1198760545 source:/home/rpg/engine/engine/lua/ldump.c
+	<stddef.h>
+	"lua.h"
+	"lobject.h"
+	"lstate.h"
+	"lundump.h"
+
+1198853923 source:/home/rpg/engine/engine/lua/lfunc.c
+	<stddef.h>
+	"lua.h"
+	"lfunc.h"
+	"lgc.h"
+	"lmem.h"
+	"lobject.h"
+	"lstate.h"
+
+1198760545 source:/home/rpg/engine/engine/lua/lgc.c
+	<string.h>
+	"lua.h"
+	"ldebug.h"
+	"ldo.h"
+	"lfunc.h"
+	"lgc.h"
+	"lmem.h"
+	"lobject.h"
+	"lstate.h"
+	"lstring.h"
+	"ltable.h"
+	"ltm.h"
+
+1198760545 source:/home/rpg/engine/engine/lua/linit.c
+	"lua.h"
+	"lualib.h"
+	"lauxlib.h"
+
+1200678463 source:/home/rpg/engine/engine/lua/liolib.c
+	<errno.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"lua.h"
+	"lauxlib.h"
+	"lualib.h"
+
+1198760545 source:/home/rpg/engine/engine/lua/llex.c
+	<ctype.h>
+	<locale.h>
+	<string.h>
+	"lua.h"
+	"ldo.h"
+	"llex.h"
+	"lobject.h"
+	"lparser.h"
+	"lstate.h"
+	"lstring.h"
+	"ltable.h"
+	"lzio.h"
+
+1198760545 source:/home/rpg/engine/engine/lua/lmathlib.c
+	<stdlib.h>
+	<math.h>
+	"lua.h"
+	"lauxlib.h"
+	"lualib.h"
+
+1198760545 source:/home/rpg/engine/engine/lua/lmem.c
+	<stddef.h>
+	"lua.h"
+	"ldebug.h"
+	"ldo.h"
+	"lmem.h"
+	"lobject.h"
+	"lstate.h"
+
+1218029368 source:/home/rpg/engine/engine/lua/loadlib.c
+	<stdlib.h>
+	<string.h>
+	"lua.h"
+	"lauxlib.h"
+	"lualib.h"
+	<dlfcn.h>
+	<windows.h>
+	<mach-o/dyld.h>
+
+1198760545 source:/home/rpg/engine/engine/lua/lobject.c
+	<ctype.h>
+	<stdarg.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"lua.h"
+	"ldo.h"
+	"lmem.h"
+	"lobject.h"
+	"lstate.h"
+	"lstring.h"
+	"lvm.h"
+
+1198760545 source:/home/rpg/engine/engine/lua/lopcodes.c
+	"lopcodes.h"
+
+1200674298 source:/home/rpg/engine/engine/lua/loslib.c
+	<errno.h>
+	<locale.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	"lua.h"
+	"lauxlib.h"
+	"lualib.h"
+
+1198855943 source:/home/rpg/engine/engine/lua/lparser.c
+	<string.h>
+	"lua.h"
+	"lcode.h"
+	"ldebug.h"
+	"ldo.h"
+	"lfunc.h"
+	"llex.h"
+	"lmem.h"
+	"lobject.h"
+	"lopcodes.h"
+	"lparser.h"
+	"lstate.h"
+	"lstring.h"
+	"ltable.h"
+
+1199373639 source:/home/rpg/engine/engine/lua/lstate.c
+	<stddef.h>
+	"lua.h"
+	"ldebug.h"
+	"ldo.h"
+	"lfunc.h"
+	"lgc.h"
+	"llex.h"
+	"lmem.h"
+	"lstate.h"
+	"lstring.h"
+	"ltable.h"
+	"ltm.h"
+
+1198760545 source:/home/rpg/engine/engine/lua/lstring.c
+	<string.h>
+	"lua.h"
+	"lmem.h"
+	"lobject.h"
+	"lstate.h"
+	"lstring.h"
+
+1215797241 source:/home/rpg/engine/engine/lua/lstrlib.c
+	<ctype.h>
+	<stddef.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"lua.h"
+	"lauxlib.h"
+	"lualib.h"
+
+1198855943 source:/home/rpg/engine/engine/lua/ltable.c
+	<math.h>
+	<string.h>
+	"lua.h"
+	"ldebug.h"
+	"ldo.h"
+	"lgc.h"
+	"lmem.h"
+	"lobject.h"
+	"lstate.h"
+	"ltable.h"
+
+1203007618 source:/home/rpg/engine/engine/lua/ltablib.c
+	<stddef.h>
+	"lua.h"
+	"lauxlib.h"
+	"lualib.h"
+
+1198760545 source:/home/rpg/engine/engine/lua/ltm.c
+	<string.h>
+	"lua.h"
+	"lobject.h"
+	"lstate.h"
+	"lstring.h"
+	"ltable.h"
+	"ltm.h"
+
+1207338701 source:/home/rpg/engine/engine/lua/lundump.c
+	<string.h>
+	"lua.h"
+	"ldebug.h"
+	"ldo.h"
+	"lfunc.h"
+	"lmem.h"
+	"lobject.h"
+	"lstring.h"
+	"lundump.h"
+	"lzio.h"
+
+1198855943 source:/home/rpg/engine/engine/lua/lvm.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"lua.h"
+	"ldebug.h"
+	"ldo.h"
+	"lfunc.h"
+	"lgc.h"
+	"lobject.h"
+	"lopcodes.h"
+	"lstate.h"
+	"lstring.h"
+	"ltable.h"
+	"ltm.h"
+	"lvm.h"
+
+1198760545 source:/home/rpg/engine/engine/lua/lzio.c
+	<string.h>
+	"lua.h"
+	"llimits.h"
+	"lmem.h"
+	"lstate.h"
+	"lzio.h"
 

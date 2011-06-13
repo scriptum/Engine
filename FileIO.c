@@ -112,8 +112,8 @@ void FS_Init(lua_State *L, char *argv[], char **pFilename) {
 	char magic[4] = "000"; /* array for the magic bytes used to recognize a zip archive */
 	char *dir = NULL;
 	char *base = NULL;
-	char **search_path = NULL;
-	char **copy;
+//	char **search_path = NULL;
+//	char **copy;
 
 	/* initialize PhysFS */
 	if (PHYSFS_init(argv[0]) ==0) {
@@ -228,15 +228,49 @@ void FS_Init(lua_State *L, char *argv[], char **pFilename) {
 			}
 		}
 	}
+	char appdata[4096];
+	#ifdef __WIN32__
+        wchar_t * w_appdata = _wgetenv(TEXT("APPDATA"));
+        //appdata = to_utf8(w_appdata);
+        //replace_char(appdata, '\\', '/');
+    #elif defined(__MACOSX__)
+        strcpy(appdata, PHYSFS_getUserDir());
+        strcat(appdata, "/Library/Application Support");
+    #else
+        char * xdgdatahome = getenv("XDG_DATA_HOME");
+
+        if (!xdgdatahome)
+        {
+            strcpy(appdata, PHYSFS_getUserDir());
+            strcat(appdata, "/.local/share/");
+        }
+        else
+            strcpy(appdata, xdgdatahome);
+    #endif
+//    printf("%s", appdata);
+    if(!PHYSFS_setWriteDir(appdata))
+        error(L, "Error: Could not set write directory '%s': %s",
+								appdata, PHYSFS_getLastError());
+    strcat(appdata, "/Scriptum Plus/");
+//    strcat(appdata, appName);
+    //char * relative_path = strcat("./Scriptum Plus/", appName);
+	if(!PHYSFS_mkdir("/Scriptum Plus/"))
+        error(L, "Error: Could not create write directory '%s': %s",
+								appdata, PHYSFS_getLastError());
+
+    if(!PHYSFS_setWriteDir(appdata))
+        error(L, "Error: Could not set write directory '%s': %s",
+								appdata, PHYSFS_getLastError());
+    PHYSFS_addToSearchPath(appdata, 0);
 
 	atexit(FS_Quit);
 
-	search_path = PHYSFS_getSearchPath();
-	copy = search_path;
+//	search_path = PHYSFS_getSearchPath();
+//	copy = search_path;
 //	while (*copy != NULL) {
 //		printf("search path: %s\n", *copy++);
 //	}
-	PHYSFS_freeList(search_path);
+//	PHYSFS_freeList(search_path);
 }
 
 int FS_loadFile(lua_State *L, const char *filename) {
@@ -397,6 +431,19 @@ static void setpath (lua_State *L, const char *fieldname, const char *envname,
 	}
 	lua_setfield(L, -2, fieldname);
 }
+static int Lua_FS_write (lua_State *L)
+{
+    if(lua_isnoneornil(L, 2))
+		return luaL_error(L, "Second argument needed.");
+    int len;
+    const char * data = luaL_checklstring(L, 2, &len);
+    const char * f = luaL_checkstring(L, 1);
+
+    PHYSFS_file* file = PHYSFS_openWrite(f);
+    PHYSFS_write(file, data, sizeof(char), len);
+    PHYSFS_close(file);
+    return 0;
+}
 
 static const struct luaL_Reg fileiolib[] = {
 	{"fileExists", Lua_FS_fileExists},
@@ -404,6 +451,7 @@ static const struct luaL_Reg fileiolib[] = {
 	{"isSymbolicLink", Lua_FS_isSymbolicLink},
 	{"getSearchPath", Lua_FS_getSearchPath},
 	{"setSearchPath", Lua_FS_setSearchPath},
+	{"write", Lua_FS_write},
 	{NULL, NULL}
 };
 
