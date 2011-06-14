@@ -40,7 +40,7 @@
 #define DEFAULT_ARCHIVE	"main.sar"
 
 #define SCRUPP_PATH				"SCRUPP_PATH"
-#define SCRUPP_PATH_DEFAULT		"?.lua;?/init.lua"
+#define SCRUPP_PATH_DEFAULT		"?.lua;?/init.lua;lib/?.lua;lib/?/init.lua"
 
 #define CHANNELS	16	/* number of audio channels */
 

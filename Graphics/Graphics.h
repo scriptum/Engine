@@ -23,7 +23,7 @@
 
 typedef struct Lua_Image {
 	/* OpenGL texture id */
-	GLuint texture;
+	GLuint texture, list;
 	/* width and height of the original image */
 	int w;
 	int h;

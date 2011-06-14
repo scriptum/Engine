@@ -35,6 +35,15 @@ int load_image_from_string(lua_State *L, const unsigned char *myBuf, unsigned in
 	ptr->texture = tex_id;
 	ptr->w = width;
 	ptr->h = height;
+	ptr->list = glGenLists(1);
+	glNewList(ptr->list, GL_COMPILE);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0, 0);	glVertex2f(0, 0);
+	glTexCoord2f(0, 1);	glVertex2f(0, height);
+	glTexCoord2f(1, 1);	glVertex2f(width, height);
+	glTexCoord2f(1, 0);	glVertex2f(width, 0);
+	glEnd();
+	glEndList();
 	luaL_getmetatable(L, "scrupp.image");
 	lua_setmetatable(L, -2);
 	return 1;
@@ -105,7 +114,7 @@ int Lua_Image_draw(lua_State *L) {
 	if(lua_istable(L, 2)) {
 	    LUA_GET_CHCKNUM(x)
 	    LUA_GET_CHCKNUM(y)
-        LUA_GET_TONUM(angle)
+	    LUA_GET_TONUM(angle)
 	    LUA_GET_TONUM(w)
 	    LUA_GET_TONUM(h)
 	    LUA_GET_TONUM(tw)
@@ -127,19 +136,28 @@ int Lua_Image_draw(lua_State *L) {
 	glPushMatrix();
 	glTranslatef(x, y, 0);
 	glRotatef(angle,0,0,1);
-	//glScaled(sx,sy,0);
+	
 	glBindTexture(GL_TEXTURE_2D, image->texture);
-    glEnable(GL_CULL_FACE);
+	glEnable(GL_CULL_FACE);
 	glEnable(GL_TEXTURE_2D);
-
-	glBegin(GL_QUADS);
-	glTexCoord2f(0, 0);         glVertex2f(0, 0);
-    glTexCoord2f(0, th);       glVertex2f(0, h);
-    glTexCoord2f(tw, th);     glVertex2f(w, h);
-    glTexCoord2f(tw, 0);       glVertex2f(w, 0);
-    glEnd();
+	if(th == 1 && tw == 1) 
+	{
+	  glScalef(w/image->w, h/image->h, 0);
+	  glCallList(image->list);
+	}
+	else
+	{
+	  glBegin(GL_QUADS);
+	  glTexCoord2f(0, 0);	glVertex2f(0, 0);
+	  glTexCoord2f(0, th);	glVertex2f(0, h);
+	  glTexCoord2f(tw, th);	glVertex2f(w, h);
+	  glTexCoord2f(tw, 0);	glVertex2f(w, 0);
+	  glEnd();
+	}
+	
+	
 	glPopMatrix();
-    glDisable(GL_CULL_FACE);
+	glDisable(GL_CULL_FACE);
 	glDisable(GL_TEXTURE_2D);
 	return 0;
 }

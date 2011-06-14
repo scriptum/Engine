@@ -11,7 +11,7 @@
 #define GL_GLEXT_PROTOTYPES
 typedef struct Lua_FontChar
 {
-    GLuint list, coord;
+    GLuint vertex, tex;
     float w;
 } Lua_FontChar;
 

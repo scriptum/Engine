@@ -64,6 +64,8 @@ static int Lua_Thread_delay(lua_State *L) {
 
 void Lua_Thread_type(lua_State *L, lua_State *L2, int index)
 {
+  int len;
+  const char * data;
     switch(lua_type(L2, index)){
         case LUA_TNUMBER:
             lua_pushnumber(L, lua_tonumber(L2, index));
@@ -72,7 +74,8 @@ void Lua_Thread_type(lua_State *L, lua_State *L2, int index)
             lua_pushboolean(L, lua_toboolean(L2, index));
             break;
         case LUA_TSTRING:
-            lua_pushstring(L, lua_tostring(L2, index));
+	    data = luaL_checklstring(L2, index, &len);
+            lua_pushlstring(L, data, len);
             break;
         default:
             lua_pushnil(L);

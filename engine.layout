@@ -2,7 +2,7 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
 	<File name="FileIO.c" open="1" top="0" tabpos="1">
-		<Cursor position="10911" topLine="328" />
+		<Cursor position="10911" topLine="332" />
 	</File>
 	<File name="FileIO.h" open="0" top="0" tabpos="14">
 		<Cursor position="0" topLine="0" />
@@ -28,35 +28,38 @@
 	<File name="Graphics/primitives.c" open="0" top="0" tabpos="13">
 		<Cursor position="2190" topLine="0" />
 	</File>
-	<File name="Keyboard.c" open="1" top="0" tabpos="5">
+	<File name="Keyboard.c" open="1" top="1" tabpos="5">
 		<Cursor position="690" topLine="0" />
 	</File>
 	<File name="Keyboard.h" open="0" top="0" tabpos="0">
 		<Cursor position="187" topLine="0" />
 	</File>
-	<File name="Macros.c" open="0" top="0" tabpos="6">
-		<Cursor position="1128" topLine="34" />
+	<File name="Macros.c" open="1" top="0" tabpos="14">
+		<Cursor position="1128" topLine="49" />
 	</File>
 	<File name="Main.c" open="1" top="0" tabpos="4">
-		<Cursor position="8066" topLine="199" />
+		<Cursor position="8066" topLine="216" />
 	</File>
 	<File name="Main.h" open="1" top="0" tabpos="7">
 		<Cursor position="1071" topLine="19" />
 	</File>
 	<File name="Mouse.c" open="1" top="0" tabpos="6">
-		<Cursor position="1312" topLine="35" />
+		<Cursor position="1312" topLine="0" />
 	</File>
-	<File name="SOIL/SOIL.c" open="1" top="1" tabpos="10">
-		<Cursor position="44916" topLine="1549" />
+	<File name="SOIL/SOIL.c" open="1" top="0" tabpos="10">
+		<Cursor position="46675" topLine="1953" />
 	</File>
 	<File name="SOIL/stb_image_aug.c" open="0" top="0" tabpos="0">
-		<Cursor position="3684" topLine="60" />
+		<Cursor position="3684" topLine="33" />
 	</File>
-	<File name="SOIL/stb_image_aug.h" open="0" top="0" tabpos="0">
-		<Cursor position="0" topLine="147" />
+	<File name="SOIL/stb_image_aug.h" open="1" top="0" tabpos="11">
+		<Cursor position="7804" topLine="138" />
 	</File>
-	<File name="Sound.c" open="0" top="0" tabpos="0">
-		<Cursor position="1306" topLine="306" />
+	<File name="SOIL/stbi_DDS_aug.h" open="1" top="0" tabpos="12">
+		<Cursor position="465" topLine="0" />
+	</File>
+	<File name="Sound.c" open="1" top="0" tabpos="13">
+		<Cursor position="559" topLine="0" />
 	</File>
 	<File name="Thread.c" open="1" top="0" tabpos="8">
 		<Cursor position="1916" topLine="128" />
