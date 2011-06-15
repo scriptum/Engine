@@ -16,6 +16,6 @@ package.links = {"GL", "lua", "SDL_mixer", "physfs"}
 package.buildoptions = { "`sdl-config --cflags` -s -march=prescott" }
 package.linkoptions = { "`sdl-config --libs` -s" }
 package.postbuildcommands = { 
-	--"strip -s bin/Release/" .. package.name, 
-	"cp bin/Release/" .. package.name .. " /home/rpg/Игры/Monopoly/bin"
+	"cp /home/rpg/engine/engine/bin/Release/engine /home/rpg/Игры/Monopoly/bin/linux",
+	"cd /home/rpg/Игры/Monopoly; ./run_russian.sh"
 	}

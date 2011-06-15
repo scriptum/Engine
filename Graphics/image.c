@@ -13,6 +13,63 @@
 #define checkimage(L) \
 	(Lua_Image *)luaL_checkudata(L, 1, "scrupp.image")
 
+//~ int image_loader(void * data)
+//~ {
+  //~ int width, height, channels;
+  //~ GLuint tex_id;
+  //~ unsigned char* img;
+  //~ unsigned int file_size;
+  //~ unsigned char *myBuf;
+  //~ PHYSFS_file* myfile;
+  //~ //while (1) 
+  //~ {
+    //~ SDL_LockMutex(imgmutex);
+    //~ int i;
+    //~ for (i = 0; i < IMG_LOAD_SLOTS; i++)
+      //~ {
+	//~ if(img_load_slot[i])
+	//~ {
+	  //~ myfile = PHYSFS_openRead(img_load_slot[i]->file);
+	  //~ if (!myfile)
+	    //~ printf("Error loading file '%s': %s", img_load_slot[i]->file, SDL_GetError());
+	  //~ file_size = PHYSFS_fileLength(myfile);
+	  //~ 
+	  //~ myBuf = (unsigned char *)malloc(sizeof(unsigned char) * file_size);
+	  //~ PHYSFS_read (myfile, myBuf, sizeof(unsigned char), file_size);
+	  //~ PHYSFS_close(myfile);
+	  //~ if( NULL == myBuf )
+	    //~ printf("Error loading file '%s': %s", img_load_slot[i]->file, SDL_GetError());
+	  //~ printf("%s\n", img_load_slot[i]->file);
+	  //~ img = SOIL_load_image_from_memory(
+					  //~ myBuf, sizeof(unsigned char) * file_size,
+					  //~ &width, &height, &channels,
+					  //~ 0 );
+	  //~ 
+	  //~ printf("%d\n", img);
+	  //~ tex_id = SOIL_internal_create_OGL_texture(
+			  //~ img, width, height, channels,
+			  //~ 0, 0,
+			  //~ GL_TEXTURE_2D, GL_TEXTURE_2D,
+			  //~ GL_MAX_TEXTURE_SIZE );
+	  //~ SOIL_free_image_data( img );
+	  //~ 
+	  //~ free(myBuf);
+	  //~ printf("%s\n", img_load_slot[i]->file);
+	  //~ img_load_slot[i]->image->w = width;
+	  //~ img_load_slot[i]->image->h = height;
+	  //~ img_load_slot[i]->image->texture = tex_id;
+	  //~ free(img_load_slot[i]->file);
+	  //~ printf("%d\n", img);
+	  //~ free(img_load_slot[i]);
+	  //~ img_load_slot[i] = NULL;
+	  //~ break;
+	//~ }
+      //~ }
+    //~ SDL_UnlockMutex(imgmutex);
+    //~ SDL_Delay(10);
+  //~ }
+//~ }
+
 int load_image_from_string(lua_State *L, const unsigned char *myBuf, unsigned int file_size, int repeat) {
     Lua_Image *ptr;
     int width, height, channels;
@@ -35,26 +92,17 @@ int load_image_from_string(lua_State *L, const unsigned char *myBuf, unsigned in
 	ptr->texture = tex_id;
 	ptr->w = width;
 	ptr->h = height;
-	ptr->list = glGenLists(1);
-	glNewList(ptr->list, GL_COMPILE);
-	glBegin(GL_QUADS);
-	glTexCoord2f(0, 0);	glVertex2f(0, 0);
-	glTexCoord2f(0, 1);	glVertex2f(0, height);
-	glTexCoord2f(1, 1);	glVertex2f(width, height);
-	glTexCoord2f(1, 0);	glVertex2f(width, 0);
-	glEnd();
-	glEndList();
 	luaL_getmetatable(L, "scrupp.image");
 	lua_setmetatable(L, -2);
 	return 1;
 }
 
 int Lua_Image_load(lua_State *L) {
-	const char* filename = luaL_checkstring(L, 1);
-	int repeat = lua_toboolean(L, 2);
-	PHYSFS_file* myfile = PHYSFS_openRead(filename);
+    const char* filename = luaL_checkstring(L, 1);
+    int repeat = lua_toboolean(L, 2);
+    PHYSFS_file* myfile = PHYSFS_openRead(filename);
     if (!myfile)
-		return luaL_error(L, "Error loading file '%s': %s", filename, SDL_GetError());
+      return luaL_error(L, "Error loading file '%s': %s", filename, SDL_GetError());
     unsigned int file_size = PHYSFS_fileLength(myfile);
     unsigned char *myBuf;
     myBuf = (unsigned char *)malloc(sizeof(unsigned char) * file_size);
@@ -65,6 +113,34 @@ int Lua_Image_load(lua_State *L) {
     if(!res) return luaL_error(L, "Error loading file '%s': %s", filename, stbi_failure_reason());
 	return 1;
 }
+
+//~ int Lua_Image_load(lua_State *L) {
+    //~ const char* filename = luaL_checkstring(L, 1);
+    //~ Lua_Image *ptr;
+    //~ ptr = lua_newuserdata(L, sizeof(Lua_Image));
+    //~ ptr->texture = null_texture;
+    //~ ptr->w = 1;
+    //~ ptr->h = 1;
+    //~ luaL_getmetatable(L, "scrupp.image");
+    //~ lua_setmetatable(L, -2);
+    //~ //find free slot
+    //~ int i;
+    //~ SDL_LockMutex(imgmutex);
+    //~ for (i = 0; i < IMG_LOAD_SLOTS; i++)
+    //~ {
+      //~ if(!img_load_slot[i])
+      //~ {
+	//~ img_load_slot[i] = (img_load_request*)malloc(sizeof(img_load_request));
+	//~ img_load_slot[i]->file = (char*)malloc(strlen(filename)+1);
+	//~ strcpy(img_load_slot[i]->file, filename);
+	//~ printf("send %s\n", img_load_slot[i]->file);
+	//~ img_load_slot[i]->image = ptr;
+	//~ break;
+      //~ }
+    //~ }
+    //~ SDL_UnlockMutex(imgmutex);
+    //~ return 1;
+//~ }
 
 int Lua_Image_loadFromString(lua_State *L) {
 	unsigned int file_size;
@@ -117,21 +193,21 @@ int Lua_Image_draw(lua_State *L) {
 	    LUA_GET_TONUM(angle)
 	    LUA_GET_TONUM(w)
 	    LUA_GET_TONUM(h)
-	    LUA_GET_TONUM(tw)
-	    LUA_GET_TONUM(th)
+	    //LUA_GET_TONUM(tw)
+	    //LUA_GET_TONUM(th)
 	} else {
         x = luaL_checknumber(L, 2);
         y = luaL_checknumber(L, 3);
         angle = lua_tonumber(L, 4);
         w = lua_tonumber(L, 5);
         h = lua_tonumber(L, 6);
-        tw = lua_tonumber(L, 7);
-        th = lua_tonumber(L, 8);
+        //tw = lua_tonumber(L, 7);
+        //th = lua_tonumber(L, 8);
 	}
 	if(!w) w = image->w;
 	if(!h) h = w * image->h / image->w;
-	tw = tw ? w/tw : 1;
-	th = th ? h/th : 1;
+	//tw = tw ? w/tw : 1;
+	//th = th ? h/th : 1;
 	/* save the modelview matrix */
 	glPushMatrix();
 	glTranslatef(x, y, 0);
@@ -140,20 +216,20 @@ int Lua_Image_draw(lua_State *L) {
 	glBindTexture(GL_TEXTURE_2D, image->texture);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_TEXTURE_2D);
-	if(th == 1 && tw == 1) 
+	//~ if(th == 1 && tw == 1) 
 	{
-	  glScalef(w/image->w, h/image->h, 0);
-	  glCallList(image->list);
+	  glScalef(w, h, 0);
+	  glCallList(quadlist);
 	}
-	else
-	{
-	  glBegin(GL_QUADS);
-	  glTexCoord2f(0, 0);	glVertex2f(0, 0);
-	  glTexCoord2f(0, th);	glVertex2f(0, h);
-	  glTexCoord2f(tw, th);	glVertex2f(w, h);
-	  glTexCoord2f(tw, 0);	glVertex2f(w, 0);
-	  glEnd();
-	}
+	//~ else
+	//~ {
+	  //~ glBegin(GL_QUADS);
+	  //~ glTexCoord2f(0, 0);	glVertex2f(0, 0);
+	  //~ glTexCoord2f(0, th);	glVertex2f(0, h);
+	  //~ glTexCoord2f(tw, th);	glVertex2f(w, h);
+	  //~ glTexCoord2f(tw, 0);	glVertex2f(w, 0);
+	  //~ glEnd();
+	//~ }
 	
 	
 	glPopMatrix();

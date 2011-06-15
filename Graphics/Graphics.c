@@ -129,6 +129,13 @@ static const struct luaL_Reg imagelib_m [] = {
 };
 
 int luaopen_graphics(lua_State *L, const char *parent) {
+	//~ imgmutex = SDL_CreateMutex();
+	//~ imgloader = SDL_CreateThread(image_loader, NULL); 
+	//~ glGenTextures(1, &null_texture);
+	//~ glBindTexture(GL_TEXTURE_2D, null_texture);
+	//~ glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+	//~ int i;
+	//~ for (i = 0; i < IMG_LOAD_SLOTS; i++) img_load_slot[i] = NULL;
 	luaL_newmetatable(L, "scrupp.image");
 	/* metatable.__index = metatable */
 	lua_pushvalue(L, -1);	/* duplicates the metatable */
@@ -136,5 +143,14 @@ int luaopen_graphics(lua_State *L, const char *parent) {
 	luaL_register(L, NULL, imagelib_m);
 	lua_pop(L, 1);	/* pop the metatable */
 	luaL_register(L, parent, graphicslib);
+	quadlist = glGenLists(1);
+	glNewList(quadlist, GL_COMPILE);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0, 0); glVertex2f(0, 0);
+	glTexCoord2f(0, 1); glVertex2f(0, 1);
+	glTexCoord2f(1, 1); glVertex2f(1, 1);
+	glTexCoord2f(1, 0); glVertex2f(1, 0);
+	glEnd();
+	glEndList();
 	return 1;
 }

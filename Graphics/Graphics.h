@@ -23,11 +23,25 @@
 
 typedef struct Lua_Image {
 	/* OpenGL texture id */
-	GLuint texture, list;
+	GLuint texture;
 	/* width and height of the original image */
 	int w;
 	int h;
 } Lua_Image;
+
+GLuint quadlist;
+
+typedef struct img_load_request {
+	char * file;
+	Lua_Image * image;
+} img_load_request;
+
+//~ #define IMG_LOAD_SLOTS 200
+//~ img_load_request *img_load_slot[IMG_LOAD_SLOTS];
+//~ SDL_mutex *imgmutex;
+//~ SDL_Thread *imgloader;
+//~ GLuint null_texture;
+int image_loader(void * data);
 
 int Lua_Graphics_init(lua_State *L);
 
