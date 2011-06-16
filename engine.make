@@ -32,6 +32,7 @@ endif
 OBJECTS := \
 	$(OBJDIR)/Font.o \
 	$(OBJDIR)/Mouse.o \
+	$(OBJDIR)/Shader.o \
 	$(OBJDIR)/FileIO.o \
 	$(OBJDIR)/Main.o \
 	$(OBJDIR)/Keyboard.o \
@@ -95,6 +96,11 @@ $(OBJDIR)/Font.o: Font.c
 	@$(CC) $(CFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/Mouse.o: Mouse.c
+	-@$(CMD_MKOBJDIR)
+	@echo $(notdir $<)
+	@$(CC) $(CFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/Shader.o: Shader.c
 	-@$(CMD_MKOBJDIR)
 	@echo $(notdir $<)
 	@$(CC) $(CFLAGS) -o "$@" -c "$<"

@@ -13,9 +13,13 @@ var_by_reference = function(var, value)
     if value then _G[var] = value else return _G[var] end
   end
 end
-
+lQuery = {}
 lquery_fx = true
 lquery_hooks = {}
+
+lQuery.addhook = function(hook)
+  table.insert(lquery_hooks, hook)
+end
 
 local easing = require("lib/lquery/easing")
 require("lib/lquery/entity")

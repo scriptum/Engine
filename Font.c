@@ -9,7 +9,7 @@
 #include "Macros.h"
 #include "Font.h"
 #include "Graphics/Graphics.h"
-#include "physfsrwops.h"
+#include "physfs.h"
 
 #define checkfont(L) \
 	(Lua_Font *)luaL_checkudata(L, 1, "scrupp.font")
@@ -20,16 +20,16 @@ Lua_Font * currentFont;
 
 static int Lua_Font_load(lua_State *L) {
     Lua_Image *img = (Lua_Image *)luaL_checkudata(L, 1, "scrupp.image");
-	Lua_Font *ptr;
-	ptr = lua_newuserdata(L, sizeof(Lua_Font));
-	ptr->texture = img->texture;
-	ptr->scale = 1;
-	//printf("%d\n",img->texture);
-	ptr->w = img->w;
-	ptr->h = img->h;
-	luaL_getmetatable(L, "scrupp.font");
-	lua_setmetatable(L, -2);
-	return 1;
+    Lua_Font *ptr;
+    ptr = lua_newuserdata(L, sizeof(Lua_Font));
+    ptr->texture = img->texture;
+    ptr->scale = 1;
+    //printf("%d\n",img->texture);
+    ptr->w = img->w;
+    ptr->h = img->h;
+    luaL_getmetatable(L, "scrupp.font");
+    lua_setmetatable(L, -2);
+    return 1;
 }
 
 float Lua_Font_Width(Lua_Font *f, register const char *str)

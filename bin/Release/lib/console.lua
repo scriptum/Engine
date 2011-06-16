@@ -154,6 +154,9 @@ end
 
 if not gameoptions.console_history then gameoptions.console_history = {""} end
 
+if not Gprint then 
+  Gprint = S.print 
+end
 local _old_print = print
 --Override print
 _G["print"] = function(...)
@@ -168,7 +171,7 @@ _G["print"] = function(...)
 	end
 	table.insert(Console.lines, str)
 end
-local screen_scale = screen_scale or 1
+if not screen_scale then screen_scale = 1 end
 Console = E:new()
 :size(800, 200)
 :move(0, 600 + 31 / screen_scale)

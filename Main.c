@@ -219,6 +219,7 @@ int main(int argc, char *argv[]) {
 	luaopen_mouse(L, NULL);
 	luaopen_keyboard(L, NULL);
 	luaopen_thread(L, NULL);
+	luaopen_shader(L, NULL);
 	//luaopen_movie(L, NULL);
 	lua_setglobal(L, NAMESPACE);
 

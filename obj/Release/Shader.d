@@ -1,4 +1,4 @@
-obj/Release/Font.o: Font.c Main.h /usr/include/SDL/SDL.h \
+obj/Release/Shader.o: Shader.c Main.h /usr/include/SDL/SDL.h \
  /usr/include/SDL/SDL_main.h /usr/include/SDL/SDL_stdinc.h \
  /usr/include/SDL/SDL_config.h /usr/include/SDL/SDL_platform.h \
  /usr/include/SDL/begin_code.h /usr/include/SDL/close_code.h \
@@ -12,4 +12,4 @@ obj/Release/Font.o: Font.c Main.h /usr/include/SDL/SDL.h \
  /usr/include/SDL/SDL_joystick.h /usr/include/SDL/SDL_quit.h \
  /usr/include/SDL/SDL_loadso.h /usr/include/SDL/SDL_timer.h \
  /usr/include/SDL/SDL_version.h /usr/include/SDL/SDL_keysym.h Macros.h \
- Font.h /usr/include/SDL/SDL_opengl.h Graphics/Graphics.h
+ Shader.h /usr/include/SDL/SDL_opengl.h
