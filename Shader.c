@@ -55,10 +55,8 @@ static int Lua_Shader_load(lua_State *L)
 	//loading shader source
 	vs = loadfile(vsname, &vslen);
 	fs = loadfile(fsname, &fslen);
-	const char *vv = vs;
-	const char *ff = fs;
-	glShaderSource(v, 1, &vv, NULL);
-	glShaderSource(f, 1, &ff, NULL);
+	glShaderSource(v, 1, &vs, NULL);
+	glShaderSource(f, 1, &fs, NULL);
 	free(vs);
 	free(fs);
 	if(!compile(v, vsname))

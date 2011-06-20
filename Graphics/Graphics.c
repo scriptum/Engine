@@ -89,6 +89,7 @@ int Lua_Graphics_resetView(lua_State *L) {
 
 static const struct luaL_Reg graphicslib [] = {
 	{"init",				Lua_Graphics_init},
+	{"getModes",				Lua_Graphics_getModes},
 	{"getWidth",		Lua_Graphics_getWindowWidth},
 	{"getHeight",		Lua_Graphics_getWindowHeight},
 	{"getSize",		Lua_Graphics_getWindowSize},

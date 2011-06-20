@@ -85,3 +85,28 @@ int Lua_Graphics_getWindowSize(lua_State *L) {
 	lua_pushinteger(L, screen->h);
 	return 2;
 }
+
+int Lua_Graphics_getModes(lua_State *L) {
+	SDL_Rect ** modes = SDL_ListModes(0, SDL_OPENGL | SDL_FULLSCREEN);
+
+	if(modes == (SDL_Rect **)0 || modes == (SDL_Rect **)-1)
+		return 0;
+
+	lua_newtable(L);
+	int i, index = 1;
+	for(i=0; modes[i]; i++)
+	{
+		lua_pushinteger(L, index);
+		lua_newtable(L);
+		lua_pushstring(L, "width");
+		lua_pushinteger(L, modes[i]->w);
+		lua_settable(L, -3);
+		lua_pushstring(L, "height");
+		lua_pushinteger(L, modes[i]->h);
+		lua_settable(L, -3);
+		lua_settable(L, -3);
+		index++;
+	}
+
+	return 1;
+}

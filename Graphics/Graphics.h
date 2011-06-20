@@ -45,6 +45,8 @@ int image_loader(void * data);
 
 int Lua_Graphics_init(lua_State *L);
 
+int Lua_Graphics_getModes(lua_State *L);
+
 int Lua_Graphics_showCursor(lua_State *L);
 
 int Lua_Graphics_getWindowWidth(lua_State *L);

@@ -93,6 +93,13 @@ static int Lua_Sound_setVolume(lua_State *L) {
 	return 0;
 }
 
+static int Lua_Sound_soundVolume(lua_State *L) {
+	int volume = luaL_checkint(L, 1);
+	luaL_argcheck(L, (volume>=0) && (volume<=MIX_MAX_VOLUME), 1, "0 <= volume <= " xstr(MIX_MAX_VOLUME));
+	Mix_Volume(-1,volume);
+	return 0;
+}
+
 static int Lua_Sound_getVolume(lua_State *L) {
 	Mix_Chunk **sample = checksound(L);
 	lua_pushinteger(L, Mix_VolumeChunk(*sample, -1));
@@ -277,6 +284,7 @@ static int music_tostring(lua_State *L) {
 static const struct luaL_Reg soundlib [] = {
 	{"newSound",		Lua_Sound_load},
 	{"newMusic",		Lua_Music_load},
+	{"setVolume",		Lua_Sound_soundVolume},
 	{"setMusicVolume",	Lua_Music_setVolume},
 	{"getMusicVolume",	Lua_Music_getVolume},
 	{"pauseMusic",		Lua_Music_pause},

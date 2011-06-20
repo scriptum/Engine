@@ -1,15 +1,4 @@
-gameoptions = {}
-table.insert(lquery_hooks, function()
-	if KeyPressed == true and Console and Console.disabled == false and 
-			(KeyPressedCounter == 1 or 
-			 KeyPressedCounter == 2 and time - KeyPressedTime > 0.3 or
-			 KeyPressedCounter > 2 and time - KeyPressedTime > 0.05) then 
-		KeyPressedTime = time
-		KeyPressedCounter = KeyPressedCounter + 1
-		debug_keypressed(KeyPressedKey,KeyPressedUni)
-	end
-end)
-local small = Fonts["Pt Sans"][8]
+local small = Fonts["Arial"][9]
 
 table.findindex = function(arr, needle)
   local i = 1, m
@@ -37,8 +26,7 @@ table.findindex = function(arr, needle)
 end
 
 debug_keypressed = function(s, key, unicode)
-  if key == "`" then 
-  print(key, s.disabled)
+  if key == "`" then
     if s.disabled == true then
       s:stop():animate({y = 400})
     else
@@ -56,6 +44,7 @@ debug_keypressed = function(s, key, unicode)
       s.input = ""
       s.cursor = 0
       s.tabupdate(s)
+      s.scroll = 0
     elseif key == "left" then
       s.cursor = s.cursor - 1
       if s.cursor < 0 then s.cursor = 0 end
@@ -151,12 +140,8 @@ debug_keypressed = function(s, key, unicode)
     end
   end
 end
-
-if not gameoptions.console_history then gameoptions.console_history = {""} end
-
-if not Gprint then 
-  Gprint = S.print 
-end
+screen_scale = 1
+--if not gameoptions.console_history then gameoptions.console_history = {""} end
 local _old_print = print
 --Override print
 _G["print"] = function(...)
@@ -171,31 +156,56 @@ _G["print"] = function(...)
 	end
 	table.insert(Console.lines, str)
 end
-if not screen_scale then screen_scale = 1 end
 Console = E:new()
 :size(800, 200)
 :move(0, 600 + 31 / screen_scale)
-:set({lines = {}, input = "", cursor = 0, disabled = true, history = gameoptions.console_history, history_cursor = #gameoptions.console_history, tabindex = 1, tabstr = "", tabstr2 = "", tabupdate = function(s) s.tabstr = s.input:sub(1, s.cursor) s.tabstr2 = s.input:sub(s.cursor + 1, s.input:len()) s.tabindex = 1 end})
+:set({
+  lines = {}, 
+  input = "", 
+  cursor = 0, 
+  disabled = true, 
+  history = {""}--[[gameoptions.console_history]], 
+  history_cursor = 1--[[#gameoptions.console_history]], 
+  tabindex = 1, 
+  tabstr = "", 
+  tabstr2 = "",
+  scroll = 0,
+  tabupdate = function(s) 
+    s.tabstr = s.input:sub(1, s.cursor) 
+    s.tabstr2 = s.input:sub(s.cursor + 1, s.input:len()) 
+    s.tabindex = 1 
+  end
+})
+:wheel(function(s, x, y, b)
+  local lines = math.ceil(180 * screen_scale / small:height())
+  if b == "u" then
+    s.scroll = s.scroll + 1
+  else
+    s.scroll = s.scroll - 1
+  end
+  if s.scroll < 0 then s.scroll = 0 end
+  if s.scroll > #s.lines - lines - 4 then s.scroll = #s.lines - lines - 4 end
+end)
 :keyrepeat(debug_keypressed)
 :draw(function(s)
   if(s.y >= 600) then return end
   scrupp.setLineWidth(1/screen_scale)
   scrupp.setSmooth(false)
-  G.setColor(20,20,20,190)
+  S.setColor(20,20,20,190)
   local x, y, w, h = math.floor(s.x), math.floor(s.y), math.floor(s.w), math.floor(s.w)
   local off1 = (w - 700) / screen_scale
   local sh = small:height()
   local off2 = (sh*2 + 2) / screen_scale
   local off3 = (sh + 1) / screen_scale
   sh = sh / screen_scale
-  G.rectangle(x, y, w, h, true)
-  G.rectangle(w - off1 - 2, y - off2, off1, off2, true)
-  G.setColor(128,128,128,255)
-  G.rectangle(x, y, w, h)
-  G.rectangle(w - off1 - 2, y - off2, off1 + 2, off2)
+  S.rectangle(x, y, w, h, true)
+  S.rectangle(w - off1 - 2, y - off2, off1, off2, true)
+  S.setColor(128,128,128,255)
+  S.rectangle(x, y, w, h)
+  S.rectangle(w - off1 - 2, y - off2, off1 + 2, off2)
   small:select()
-  G.setColor(255,255,255,255)
-  G.line(x, y + 200 - off3, w, y + 200 - off3)
+  S.setColor(255,255,255,255)
+  S.line(x, y + 200 - off3, w, y + 200 - off3)
   Gprint('fps: '..scrupp.fps() .. '\nMemory: ' .. gcinfo(), w - off1, y - off2)
   Gprint('> ' .. s.input,x,y + 200 - sh - 1)
   local lines = math.ceil(180 * screen_scale / sh)
@@ -205,7 +215,7 @@ Console = E:new()
     S.line(lx, ly - sh, lx, ly)
   end
   local c, i = 0, 0
-  for i = math.max(#s.lines - lines + 1, 1), #s.lines do
+  for i = math.max(#s.lines - lines + 1 - s.scroll, 1), #s.lines - s.scroll do
     Gprint(s.lines[i], x, y + c * sh / screen_scale)
     c = c + 1
   end
