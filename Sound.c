@@ -4,7 +4,7 @@
 ** See Copyright Notice in COPYRIGHT
 */
 
-#include "include/SDL_mixer.h"
+#include "SDL_mixer.h"
 
 #include "Main.h"
 #include "Macros.h"

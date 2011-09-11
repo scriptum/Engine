@@ -96,17 +96,23 @@ int load_image_from_string(lua_State *L, const unsigned char *myBuf, unsigned in
 }
 
 int Lua_Image_load(lua_State *L) {
-    const char* filename = luaL_checkstring(L, 1);
-    int repeat = lua_toboolean(L, 2);
-    PHYSFS_file* myfile = PHYSFS_openRead(filename);
+    const char* filename;
+	int repeat, res;
+	PHYSFS_file* myfile;
+	unsigned char *myBuf;
+	unsigned int file_size;
+	filename = luaL_checkstring(L, 1);
+    
+	repeat = lua_toboolean(L, 2);
+    myfile = PHYSFS_openRead(filename);
     if (!myfile)
       return luaL_error(L, "Error loading file '%s': %s", filename, SDL_GetError());
-    unsigned int file_size = PHYSFS_fileLength(myfile);
-    unsigned char *myBuf;
+    file_size = PHYSFS_fileLength(myfile);
+    
     myBuf = (unsigned char *)malloc(sizeof(unsigned char) * file_size);
     PHYSFS_read (myfile, myBuf, sizeof(unsigned char), file_size);
     PHYSFS_close(myfile);
-    int res = load_image_from_string(L, myBuf, file_size, repeat);
+    res = load_image_from_string(L, myBuf, file_size, repeat);
     free(myBuf);
     if(!res) return luaL_error(L, "Error loading file '%s': %s", filename, stbi_failure_reason());
 	return 1;

@@ -7,7 +7,7 @@
 #ifndef __GRAPHICS_H__
 #define __GRAPHICS_H__
 
-#include "../include/SDL_opengl.h"
+#include "SDL_opengl.h"
 
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
 	#define RMASK 0xFF000000

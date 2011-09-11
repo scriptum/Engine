@@ -15,21 +15,22 @@
 
 #define SOIL_CHECK_FOR_GL_ERRORS 0
 
-#ifdef WIN32
-	#define WIN32_LEAN_AND_MEAN
-	#include <windows.h>
-	#include <wingdi.h>
-	#include <GL/gl.h>
-#elif defined(__APPLE__) || defined(__APPLE_CC__)
-	/*	I can't test this Apple stuff!	*/
-	#include <OpenGL/gl.h>
-	#include <Carbon/Carbon.h>
-	#define APIENTRY
-#else
-	#include <GL/gl.h>
-	#include <GL/glx.h>
-#endif
+//~ #ifdef WIN32
+	//~ #define WIN32_LEAN_AND_MEAN
+	//~ #include <windows.h>
+	//~ #include <wingdi.h>
+	//~ #include <GL/gl.h>
+//~ #elif defined(__APPLE__) || defined(__APPLE_CC__)
+	//~ /*	I can't test this Apple stuff!	*/
+	//~ #include <OpenGL/gl.h>
+	//~ #include <Carbon/Carbon.h>
+	//~ #define APIENTRY
+//~ #else
+	//~ #include <GL/gl.h>
+	//~ #include <GL/glx.h>
+//~ #endif
 
+#include "SDL_opengl.h"
 #include "SOIL.h"
 #include "stb_image_aug.h"
 #include "image_helper.h"
@@ -1980,43 +1981,9 @@ int query_DXT_capability( void )
 		{
 			/*	and find the address of the extension function	*/
 			P_SOIL_GLCOMPRESSEDTEXIMAGE2DPROC ext_addr = NULL;
-			#ifdef WIN32
-				ext_addr = (P_SOIL_GLCOMPRESSEDTEXIMAGE2DPROC)
-						wglGetProcAddress
-						(
-							"glCompressedTexImage2DARB"
-						);
-			#elif defined(__APPLE__) || defined(__APPLE_CC__)
-				/*	I can't test this Apple stuff!	*/
-				CFBundleRef bundle;
-				CFURLRef bundleURL =
-					CFURLCreateWithFileSystemPath(
-						kCFAllocatorDefault,
-						CFSTR("/System/Library/Frameworks/OpenGL.framework"),
-						kCFURLPOSIXPathStyle,
-						true );
-				CFStringRef extensionName =
-					CFStringCreateWithCString(
-						kCFAllocatorDefault,
-						"glCompressedTexImage2DARB",
-						kCFStringEncodingASCII );
-				bundle = CFBundleCreate( kCFAllocatorDefault, bundleURL );
-				assert( bundle != NULL );
-				ext_addr = (P_SOIL_GLCOMPRESSEDTEXIMAGE2DPROC)
-						CFBundleGetFunctionPointerForName
-						(
-							bundle, extensionName
-						);
-				CFRelease( bundleURL );
-				CFRelease( extensionName );
-				CFRelease( bundle );
-			#else
-				ext_addr = (P_SOIL_GLCOMPRESSEDTEXIMAGE2DPROC)
-						glXGetProcAddressARB
-						(
-							(const GLubyte *)"glCompressedTexImage2DARB"
-						);
-			#endif
+			
+			ext_addr = (P_SOIL_GLCOMPRESSEDTEXIMAGE2DPROC) SDL_GL_GetProcAddress("glCompressedTexImage2DARB");
+			
 			/*	Flag it so no checks needed later	*/
 			if( NULL == ext_addr )
 			{

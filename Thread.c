@@ -128,9 +128,10 @@ static const struct luaL_Reg threadlib_m [] = {
 
 void thread_init()
 {
+	int res;
     messages = luaL_newstate();
     luaL_openlibs(messages);
-    int res = luaL_dostring (messages, "messages = {} \
+    res = luaL_dostring (messages, "messages = {} \
 \
 function send(mess, key) \
 	if not messages[key] then messages[key] = {} end \

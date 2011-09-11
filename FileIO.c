@@ -8,11 +8,11 @@
 #include "Macros.h"
 #include "FileIO.h"
 
-#include <luaconf.h>
+#include "luaconf.h"
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <physfs.h>
+#include "physfs.h"
 
 /* copied from lua.c of the Lua distribution */
 static const char *pushnexttemplate (lua_State *L, const char *path) {
@@ -112,6 +112,7 @@ void FS_Init(lua_State *L, char *argv[], char **pFilename) {
 	char magic[4] = "000"; /* array for the magic bytes used to recognize a zip archive */
 	char *dir = NULL;
 	char *base = NULL;
+	char appdata[4096];
 //	char **search_path = NULL;
 //	char **copy;
 
@@ -228,25 +229,22 @@ void FS_Init(lua_State *L, char *argv[], char **pFilename) {
 			}
 		}
 	}
-	char appdata[4096];
-	#ifdef __WIN32__
-        wchar_t * w_appdata = _wgetenv(TEXT("APPDATA"));
-        //appdata = to_utf8(w_appdata);
-        //replace_char(appdata, '\\', '/');
-    #elif defined(__MACOSX__)
-        strcpy(appdata, PHYSFS_getUserDir());
-        strcat(appdata, "/Library/Application Support");
-    #else
-        char * xdgdatahome = getenv("XDG_DATA_HOME");
+	
 
-        if (!xdgdatahome)
-        {
-            strcpy(appdata, PHYSFS_getUserDir());
-            strcat(appdata, "/.local/share/");
-        }
-        else
-            strcpy(appdata, xdgdatahome);
-    #endif
+  //  char * xdgdatahome = getenv("XDG_DATA_HOME");
+
+    //if (!xdgdatahome)
+    //{
+        strcpy(appdata, PHYSFS_getUserDir());
+		#ifdef __GNUC__
+			strcat(appdata, "/.local/share/");
+		#else
+			strcat(appdata, "Application Data");
+		#endif
+    //}
+    //else
+    //    strcpy(appdata, xdgdatahome);
+
 //    printf("%s", appdata);
     if(!PHYSFS_setWriteDir(appdata))
         error(L, "Error: Could not set write directory '%s': %s",
@@ -433,13 +431,17 @@ static void setpath (lua_State *L, const char *fieldname, const char *envname,
 }
 static int Lua_FS_write (lua_State *L)
 {
+	int len;
+	const char * data;
+	const char * f;
+	PHYSFS_file * file;
     if(lua_isnoneornil(L, 2))
 		return luaL_error(L, "Second argument needed.");
-    int len;
-    const char * data = luaL_checklstring(L, 2, &len);
-    const char * f = luaL_checkstring(L, 1);
+    
+    data = luaL_checklstring(L, 2, &len);
+    f = luaL_checkstring(L, 1);
 
-    PHYSFS_file* file = PHYSFS_openWrite(f);
+    file = PHYSFS_openWrite(f);
     PHYSFS_write(file, data, sizeof(char), len);
     PHYSFS_close(file);
     return 0;

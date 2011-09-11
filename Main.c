@@ -13,14 +13,14 @@
 #include "Mouse.h"
 #include "Keyboard.h"
 #include "Sound.h"
-
+#include "render.h"
 /* cairo binding lua-oocairo */
 //#include "lua-oocairo/oocairo.h"
 
 
 
 #include <string.h>
-#include <SDL_opengl.h>
+#include "SDL_opengl.h"
 
 int done = 0;
 float FPS = 60;
@@ -274,9 +274,10 @@ int main(int argc, char *argv[]) {
 	if (SDL_GetVideoSurface() == NULL)
 		error(L, "Error: " PROG_NAME " was not initialized by " NAMESPACE ".init()!\n");
 
-	/* main loop */
-    //enable UNICODE support
+	
+	//enable UNICODE support
 	SDL_EnableUNICODE(1);
+	/* main loop */
 	/* Wait until SDL_QUIT event type (window closed) or a call to scrupp.exit() occurs */
 	while ( !done ) {
 		lastTick = SDL_GetTicks();

@@ -7,7 +7,8 @@
 #ifndef __FONT_H__
 #define __FONT_H__
 
-#include <SDL_opengl.h>
+#include "SDL_opengl.h"
+
 #define GL_GLEXT_PROTOTYPES
 typedef struct Lua_FontChar
 {

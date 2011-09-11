@@ -1,18 +1,15 @@
-
 #include <math.h>
-
-
 
 #include "../SOIL/SOIL.h"
 #include "../Main.h"
 #include "../Macros.h"
 #include "Graphics.h"
 #include "../physfsrwops.h"
-
+#include "../render.h"
 SDL_Surface *screen;
 
 int Lua_Graphics_init(lua_State *L) {
-	appName = (char *)luaL_checkstring(L, 1);
+	char * appName = (char *)luaL_checkstring(L, 1);
 	int width = luaL_checkint(L, 2);
 	int height = luaL_checkint(L, 3);
 	char bpp = luaL_checkint(L, 4);
@@ -45,7 +42,7 @@ int Lua_Graphics_init(lua_State *L) {
 	if (screen == NULL)
 		return luaL_error(L, 	"Couldn't set %dx%dx%d video mode: %s",
 								width, height, bpp, SDL_GetError());
-	/* set the OpenGL state */
+	initRenderer();
 	/* set background color */
 	glClearColor( 0, 0, 0, 1);
 	/* set line antialiasing */
@@ -99,12 +96,12 @@ int Lua_Graphics_getWindowSize(lua_State *L) {
 
 int Lua_Graphics_getModes(lua_State *L) {
 	SDL_Rect ** modes = SDL_ListModes(0, SDL_OPENGL | SDL_FULLSCREEN);
-
+	int i, index = 1;
 	if(modes == (SDL_Rect **)0 || modes == (SDL_Rect **)-1)
 		return 0;
 
 	lua_newtable(L);
-	int i, index = 1;
+	
 	for(i=0; modes[i]; i++)
 	{
 		lua_pushinteger(L, index);
@@ -118,6 +115,5 @@ int Lua_Graphics_getModes(lua_State *L) {
 		lua_settable(L, -3);
 		index++;
 	}
-
 	return 1;
 }

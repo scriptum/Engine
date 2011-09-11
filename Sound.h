@@ -7,7 +7,7 @@
 #ifndef __SOUND_H__
 #define __SOUND_H__
 
-#include <SDL_mixer.h>
+#include "SDL_mixer.h"
 
 typedef struct Lua_Sound {
 	Mix_Chunk 	*sample;

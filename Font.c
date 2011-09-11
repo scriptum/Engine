@@ -64,8 +64,9 @@ static int Lua_Font_height(lua_State *L) {
 }
 
 static int Lua_Font_stringWidth(lua_State *L) {
+	const char * str;
     if(!currentFont) return luaL_error(L, "Call <yourfont>:select() first!");
-    const char * str = luaL_checkstring(L, 1);
+    str = luaL_checkstring(L, 1);
     lua_pushnumber(L, Lua_Font_Width(currentFont, str));
     return 1;
 }
@@ -91,15 +92,18 @@ glDrawArrays(GL_QUADS, 0, 4);
 #endif
 
 static int Lua_Font_print(lua_State *L) {
-    if(!currentFont) return luaL_error(L, "Call <yourfont>:select() first!");
-    register const char * str = luaL_checkstring(L, 1);
-    float x = (float)luaL_checknumber(L, 2);
-    float y = (float)luaL_checknumber(L, 3);
-    float maxw = (float)lua_tonumber(L, 4);
-    const char *align = lua_tostring(L, 5);
-    float w = 0;
-    unsigned char c;
+	register const char * str;
+	const char *align;
+	float x, y, maxw, w;
+	unsigned char c;
     Lua_FontChar *ch;
+    if(!currentFont) return luaL_error(L, "Call <yourfont>:select() first!");
+    str = luaL_checkstring(L, 1);
+    x = (float)luaL_checknumber(L, 2);
+    y = (float)luaL_checknumber(L, 3);
+    maxw = (float)lua_tonumber(L, 4);
+    align = lua_tostring(L, 5);
+    w = 0;
     glPushMatrix();
     glTranslatef(x, y, 0);
 
@@ -144,9 +148,6 @@ static int Lua_Font_print(lua_State *L) {
 }
 
 #define PRINT_LINES(A,B) \
-int i = 0, last_space = 0, buf = 0;\
-float w = 0;\
-unsigned char c;\
 while(str[i]) {\
     c = (unsigned char)str[i];\
     switch(c)\
@@ -174,13 +175,19 @@ while(str[i]) {\
 B
 
 static int Lua_Font_printf(lua_State *L) {
-    if(!currentFont) return luaL_error(L, "Call <yourfont>:select() first!");
-    register const char * str = luaL_checkstring(L, 1);
-    float x = (float)luaL_checknumber(L, 2);
-    float y = (float)luaL_checknumber(L, 3);
-    float maxw = (float)luaL_checknumber(L, 4) / currentFont->scale;
-    const char *align = lua_tostring(L, 5);
+	float x, y, maxw;
+	register const char * str;
+	const char *align;
     Lua_FontChar *ch;
+	int i = 0, last_space = 0, buf = 0;
+	float w = 0;
+	unsigned char c;
+    if(!currentFont) return luaL_error(L, "Call <yourfont>:select() first!");
+    str = luaL_checkstring(L, 1);
+    x = (float)luaL_checknumber(L, 2);
+    y = (float)luaL_checknumber(L, 3);
+    maxw = (float)luaL_checknumber(L, 4) / currentFont->scale;
+    align = lua_tostring(L, 5);
     glPushMatrix();
     glTranslatef(x, y, 0);
     glScalef(currentFont->scale, currentFont->scale, 0);
@@ -236,11 +243,17 @@ static int Lua_Font_printf(lua_State *L) {
 }
 
 static int Lua_Font_stringToLines(lua_State *L) {
+	register char * str;
+	float maxw;
+	int j = 1;
+	int i = 0, last_space = 0, buf = 0;
+	float w = 0;
+	unsigned char c;
     if(!currentFont) return luaL_error(L, "Call <yourfont>:select() first!");
-    register char * str = (char *)luaL_checkstring(L, 1);
-    float maxw = (float)luaL_checknumber(L, 2) / currentFont->scale;
+    str = (char *)luaL_checkstring(L, 1);
+    maxw = (float)luaL_checknumber(L, 2) / currentFont->scale;
     lua_newtable(L);
-    int j = 1;
+    
 
     PRINT_LINES(lua_pushlstring(L, str + buf, last_space - buf);
             lua_rawseti(L, -2, j++);,

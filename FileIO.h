@@ -7,13 +7,13 @@
 #ifndef __FILEIO_H__
 #define __FILEIO_H__
 
-#ifdef LOVE_WINDOWS
-#	include <windows.h>
-#	include <direct.h>
-#else
-#	include <sys/param.h>
-#	include <unistd.h>
-#endif
+//~ #ifdef LOVE_WINDOWS
+//~ #	include <windows.h>
+//~ #	include <direct.h>
+//~ #else
+//~ #	include <sys/param.h>
+//~ #	include <unistd.h>
+//~ #endif
 
 #define FILEIO_SUCCESS 0
 #define FILEIO_ERROR 1
