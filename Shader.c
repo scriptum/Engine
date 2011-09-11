@@ -2,7 +2,6 @@
 #include "Macros.h"
 #include "Shader.h"
 #include "physfs.h"
-
 char * loadfile(const char * name, unsigned int * length)
 {
 	char * data;
@@ -85,14 +84,69 @@ static int Lua_Shader_load(lua_State *L)
 	return 1;
 }
 
+GLuint current_program;
 static int Lua_Shader_use(lua_State *L)
 {
-	glUseProgram(luaL_checkint(L, 1));
+	current_program = (GLuint)luaL_checkint(L, 1);
+	glUseProgram(current_program);
 }
 
+GLuint getUniform(lua_State *L)
+{
+	if(lua_isnumber(L, 1)) return luaL_checkint(L, 1);
+	const char *name;
+	GLuint location;
+	name = lua_tostring(L, 1);
+	location = glGetUniformLocation(current_program, name);
+	if(location == -1) return luaL_error(L, "Error: uniform '%s' not found", name);
+	return location;
+}
+
+static int Lua_Shader_setUniformf(lua_State *L)
+{
+	switch(lua_gettop(L))
+	{
+		case 2:
+			glUniform1f(getUniform(L), (GLfloat)luaL_checknumber(L, 2));
+			printf("%f\n",(GLfloat)luaL_checknumber(L, 2));
+			break;
+		case 3:
+			glUniform2f(getUniform(L), (GLfloat)luaL_checknumber(L, 2), (GLfloat)luaL_checknumber(L, 3));
+			break;
+		case 4:
+			glUniform3f(getUniform(L), (GLfloat)luaL_checknumber(L, 2), (GLfloat)luaL_checknumber(L, 3), (GLfloat)luaL_checknumber(L, 4));
+			break;
+		case 5:
+			glUniform4f(getUniform(L), (GLfloat)luaL_checknumber(L, 2), (GLfloat)luaL_checknumber(L, 3), (GLfloat)luaL_checknumber(L, 4), (GLfloat)luaL_checknumber(L, 5));
+			break;
+	}
+	return 0;
+}
+
+static int Lua_Shader_setUniformi(lua_State *L)
+{
+	switch(lua_gettop(L))
+	{
+		case 2:
+			glUniform1i(getUniform(L), (int)luaL_checknumber(L, 2));
+			break;
+		case 3:
+			glUniform2i(getUniform(L), (int)luaL_checknumber(L, 2), (int)luaL_checknumber(L, 3));
+			break;
+		case 4:
+			glUniform3i(getUniform(L), (int)luaL_checknumber(L, 2), (int)luaL_checknumber(L, 3), (int)luaL_checknumber(L, 4));
+			break;
+		case 5:
+			glUniform4i(getUniform(L), (int)luaL_checknumber(L, 2), (int)luaL_checknumber(L, 3), (int)luaL_checknumber(L, 4), (int)luaL_checknumber(L, 5));
+			break;
+	}
+	return 0;
+}
 static const struct luaL_Reg shaderlib [] = {
 	{"newShader", Lua_Shader_load},
 	{"useShader", Lua_Shader_use},
+	{"setUniformf", Lua_Shader_setUniformf},
+	{"setUniformi", Lua_Shader_setUniformi},
 	{NULL, NULL}
 };
 

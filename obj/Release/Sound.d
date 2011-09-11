@@ -12,5 +12,7 @@ obj/Release/Sound.o: Sound.c /usr/include/SDL/SDL_mixer.h \
  /usr/include/SDL/SDL_keysym.h /usr/include/SDL/SDL_mouse.h \
  /usr/include/SDL/SDL_video.h /usr/include/SDL/SDL_joystick.h \
  /usr/include/SDL/SDL_quit.h /usr/include/SDL/SDL_loadso.h \
- /usr/include/SDL/SDL_timer.h /usr/include/SDL/SDL_keysym.h Macros.h \
- Sound.h physfsrwops.h
+ /usr/include/SDL/SDL_timer.h /usr/include/SDL/SDL_keysym.h \
+ /usr/include/lua5.1/lua.h /usr/include/lua5.1/luaconf.h \
+ /usr/include/lua5.1/lualib.h /usr/include/lua5.1/lua.h \
+ /usr/include/lua5.1/lauxlib.h Macros.h Sound.h physfsrwops.h

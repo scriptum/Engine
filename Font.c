@@ -124,14 +124,10 @@ static int Lua_Font_print(lua_State *L) {
             case '\t':
                 glTranslatef(currentFont->chars[32].w * 8, 0, 0);
                 w += currentFont->chars[32].w * 8;
-//                last_space = str;
                 continue;
-//            case ' ':
-//                last_space = str;
 	    }
         ch = &currentFont->chars[(unsigned char)*str];
 	DRAW_CHAR
-        //~ glCallList(ch->list);
         glTranslatef(ch->w, 0, 0);
         w += ch->w;
 	} while(*++str);

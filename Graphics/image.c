@@ -1,5 +1,4 @@
 #include <SDL_opengl.h>
-#include <SDL_image.h>
 #include <math.h>
 
 
@@ -216,22 +215,8 @@ int Lua_Image_draw(lua_State *L) {
 	glBindTexture(GL_TEXTURE_2D, image->texture);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_TEXTURE_2D);
-	//~ if(th == 1 && tw == 1) 
-	{
-	  glScalef(w, h, 0);
-	  glCallList(quadlist);
-	}
-	//~ else
-	//~ {
-	  //~ glBegin(GL_QUADS);
-	  //~ glTexCoord2f(0, 0);	glVertex2f(0, 0);
-	  //~ glTexCoord2f(0, th);	glVertex2f(0, h);
-	  //~ glTexCoord2f(tw, th);	glVertex2f(w, h);
-	  //~ glTexCoord2f(tw, 0);	glVertex2f(w, 0);
-	  //~ glEnd();
-	//~ }
-	
-	
+	glScalef(w, h, 0);
+	glCallList(quadlist);
 	glPopMatrix();
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_TEXTURE_2D);

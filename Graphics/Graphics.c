@@ -5,7 +5,6 @@
 */
 
 #include <SDL_opengl.h>
-#include <SDL_image.h>
 #include <math.h>
 
 
@@ -144,7 +143,12 @@ int luaopen_graphics(lua_State *L, const char *parent) {
 	luaL_register(L, NULL, imagelib_m);
 	lua_pop(L, 1);	/* pop the metatable */
 	luaL_register(L, parent, graphicslib);
+	return 1;
+}
+
+void genquadlist() {
 	quadlist = glGenLists(1);
+	printf("%d\n", quadlist);
 	glNewList(quadlist, GL_COMPILE);
 	glBegin(GL_QUADS);
 	glTexCoord2f(0, 0); glVertex2f(0, 0);
@@ -153,5 +157,4 @@ int luaopen_graphics(lua_State *L, const char *parent) {
 	glTexCoord2f(1, 0); glVertex2f(1, 0);
 	glEnd();
 	glEndList();
-	return 1;
 }

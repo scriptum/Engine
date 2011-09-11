@@ -1,6 +1,5 @@
 
 #include <SDL_opengl.h>
-#include <SDL_image.h>
 #include <math.h>
 
 
@@ -43,7 +42,7 @@ int Lua_Graphics_init(lua_State *L) {
 //	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
 //	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE,  8);
 	SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, vsync);
-	screen = SDL_SetVideoMode(width, height, bpp, flags);
+	screen = SDL_SetVideoMode(width, height, 32, flags);
 	if (screen == NULL)
 		return luaL_error(L, 	"Couldn't set %dx%dx%d video mode: %s",
 								width, height, bpp, SDL_GetError());
@@ -52,7 +51,7 @@ int Lua_Graphics_init(lua_State *L) {
 	glClearColor( 0, 0, 0, 1);
 	/* set line antialiasing */
 	glEnable(GL_POINT_SMOOTH);
-    glEnable(GL_LINE_SMOOTH);
+	glEnable(GL_LINE_SMOOTH);
 	/* enable blending */
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
@@ -67,6 +66,19 @@ int Lua_Graphics_init(lua_State *L) {
 	glOrtho( 0, width, height, 0, -1, 1 );
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
+	
+	if(!quadlist)
+	{
+		quadlist = glGenLists(1);
+		glNewList(quadlist, GL_COMPILE);
+		glBegin(GL_QUADS);
+		glTexCoord2f(0, 0); glVertex2f(0, 0);
+		glTexCoord2f(0, 1); glVertex2f(0, 1);
+		glTexCoord2f(1, 1); glVertex2f(1, 1);
+		glTexCoord2f(1, 0); glVertex2f(1, 0);
+		glEnd();
+		glEndList();
+	}
 	return 0;
 }
 

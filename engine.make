@@ -14,19 +14,13 @@ ifeq ($(CONFIG),Release)
   OBJDIR := obj/Release
   OUTDIR := bin/Release
   CPPFLAGS := $(DEPFLAGS)
-  CFLAGS += $(CPPFLAGS) $(TARGET_ARCH) -g -Os -fomit-frame-pointer `sdl-config --cflags` -s -march=prescott
+  CFLAGS += $(CPPFLAGS) $(TARGET_ARCH) -g -O3 -fomit-frame-pointer `sdl-config --cflags` -s -march=prescott -ffast-math -I/usr/include/lua5.1
   CXXFLAGS += $(CFLAGS)
-  LDFLAGS += -L$(BINDIR) -L$(LIBDIR) `sdl-config --libs` -s -lGL -llua -lSDL_mixer -lphysfs
+  LDFLAGS += -L$(BINDIR) -L$(LIBDIR) `sdl-config --libs` -s -lGL -llua5.1 -lSDL_mixer -lphysfs
   LDDEPS :=
   RESFLAGS :=
   TARGET := engine
  BLDCMD = $(CC) -o $(OUTDIR)/$(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(TARGET_ARCH)
-
-  define postbuildcmd
-	@echo Running post-build commands...
-	cp /home/rpg/engine/engine/bin/Release/engine /home/rpg/Игры/Monopoly/bin/linux
-	cd /home/rpg/Игры/Monopoly; ./run_russian.sh
-  endef
 endif
 
 OBJECTS := \
@@ -77,7 +71,6 @@ $(OUTDIR)/$(TARGET): $(OBJECTS) $(LDDEPS) $(RESOURCES)
 	-@$(CMD_MKLIBDIR)
 	-@$(CMD_MKOUTDIR)
 	@$(BLDCMD)
-	$(postbuildcmd)
 
 clean:
 	@echo Cleaning engine

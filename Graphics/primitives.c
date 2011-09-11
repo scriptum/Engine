@@ -1,5 +1,4 @@
 #include <SDL_opengl.h>
-#include <SDL_image.h>
 #include <math.h>
 
 
@@ -118,14 +117,23 @@ int Lua_Graphics_setColor(lua_State *L) {
 int Lua_Graphics_setBlendMode(lua_State *L) {
 	const char * str = luaL_checkstring(L, 1);
 	if(strcmp(str, "subtractive") == 0)
-	glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
-		else
-	glBlendEquation(GL_FUNC_ADD);
+  {
+    glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  }
+	else
+    glBlendEquation(GL_FUNC_ADD);
 	if (strcmp(str, "alpha") == 0)
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	else if (strcmp(str, "multiplicative") == 0)
 		glBlendFunc(GL_DST_COLOR, GL_ONE_MINUS_SRC_ALPHA);
 	else if (strcmp(str, "additive") == 0)
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+  else if (strcmp(str, "screen") == 0)
+    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_COLOR);
+  else if (strcmp(str, "mask") == 0)
+    glBlendFuncSeparate(GL_ZERO, GL_ONE, GL_SRC_COLOR, GL_ZERO);
+  else if (strcmp(str, "foreground") == 0)
+    glBlendFunc(GL_DST_ALPHA, GL_ONE_MINUS_DST_ALPHA);
 	return 0;
 }
