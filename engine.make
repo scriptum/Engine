@@ -14,9 +14,9 @@ ifeq ($(CONFIG),Release)
   OBJDIR := obj/Release
   OUTDIR := bin/Release
   CPPFLAGS := $(DEPFLAGS)
-  CFLAGS += $(CPPFLAGS) $(TARGET_ARCH) -g -O3 -fomit-frame-pointer `sdl-config --cflags` -s -march=prescott -ffast-math -I/usr/include/lua5.1
+  CFLAGS += $(CPPFLAGS) $(TARGET_ARCH) -g -O3 -fomit-frame-pointer `sdl-config --cflags` -I./include -L./lib
   CXXFLAGS += $(CFLAGS)
-  LDFLAGS += -L$(BINDIR) -L$(LIBDIR) `sdl-config --libs` -s -lGL -llua5.1 -lSDL_mixer -lphysfs
+  LDFLAGS += -L$(BINDIR) -L$(LIBDIR) `sdl-config --libs` -L./lib -lGL -llua5.1 -lSDL_mixer -lphysfs
   LDDEPS :=
   RESFLAGS :=
   TARGET := engine

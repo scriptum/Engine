@@ -1,17 +1,12 @@
-obj/Release/Keyboard.o: Keyboard.c Main.h /usr/include/SDL/SDL.h \
- /usr/include/SDL/SDL_main.h /usr/include/SDL/SDL_stdinc.h \
- /usr/include/SDL/SDL_config.h /usr/include/SDL/SDL_platform.h \
- /usr/include/SDL/begin_code.h /usr/include/SDL/close_code.h \
- /usr/include/SDL/SDL_audio.h /usr/include/SDL/SDL_error.h \
- /usr/include/SDL/SDL_endian.h /usr/include/SDL/SDL_mutex.h \
- /usr/include/SDL/SDL_thread.h /usr/include/SDL/SDL_rwops.h \
- /usr/include/SDL/SDL_cdrom.h /usr/include/SDL/SDL_cpuinfo.h \
- /usr/include/SDL/SDL_events.h /usr/include/SDL/SDL_active.h \
- /usr/include/SDL/SDL_keyboard.h /usr/include/SDL/SDL_keysym.h \
- /usr/include/SDL/SDL_mouse.h /usr/include/SDL/SDL_video.h \
- /usr/include/SDL/SDL_joystick.h /usr/include/SDL/SDL_quit.h \
- /usr/include/SDL/SDL_loadso.h /usr/include/SDL/SDL_timer.h \
- /usr/include/SDL/SDL_version.h /usr/include/SDL/SDL_keysym.h \
- /usr/include/lua5.1/lua.h /usr/include/lua5.1/luaconf.h \
- /usr/include/lua5.1/lualib.h /usr/include/lua5.1/lua.h \
- /usr/include/lua5.1/lauxlib.h Keyboard.h
+obj/Release/Keyboard.o: Keyboard.c Main.h include/SDL.h \
+  include/SDL_main.h include/SDL_stdinc.h include/SDL_config.h \
+  include/SDL_platform.h include/SDL_config_win32.h include/begin_code.h \
+  include/close_code.h include/SDL_audio.h include/SDL_error.h \
+  include/SDL_endian.h include/SDL_mutex.h include/SDL_thread.h \
+  include/SDL_rwops.h include/SDL_cdrom.h include/SDL_cpuinfo.h \
+  include/SDL_events.h include/SDL_active.h include/SDL_keyboard.h \
+  include/SDL_keysym.h include/SDL_mouse.h include/SDL_video.h \
+  include/SDL_joystick.h include/SDL_quit.h include/SDL_loadso.h \
+  include/SDL_timer.h include/SDL_version.h include/SDL_keysym.h \
+  include/lua.h include/luaconf.h include/lualib.h include/lua.h \
+  include/lauxlib.h Keyboard.h

@@ -18,12 +18,12 @@
 # define chdir _chdir
 #endif
 
-#include <SDL.h>
-#include <SDL_keysym.h>
+#include "include/SDL.h"
+#include "include/SDL_keysym.h"
 
-#include "lua.h"
-#include "lualib.h"
-#include "lauxlib.h"
+#include "include/lua.h"
+#include "include/lualib.h"
+#include "include/lauxlib.h"
 
 #define UNUSED(x) ((void)(x)) /* to avoid warnings */
 

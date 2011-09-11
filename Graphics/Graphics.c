@@ -4,7 +4,6 @@
 ** See Copyright Notice in COPYRIGHT
 */
 
-#include <SDL_opengl.h>
 #include <math.h>
 
 
