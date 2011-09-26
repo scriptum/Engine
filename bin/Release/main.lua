@@ -3,6 +3,8 @@ if scrupp then
 	scrupp.setDelta(0)
 	G=scrupp
 end
+screen_width = 800
+screen_height = 600
 require 'lib.lquery'
 require 'lib.table'
 if scrupp then 
@@ -10,7 +12,7 @@ if scrupp then
 	lQuery.addhook(S.clear)
 end
 local loadShader = function(name)
-	return S.newShader('data/shader/'..name..'/'..name..'.vert', 'data/shader/'..name..'/'..name..'.frag')
+	return S.newShader('data/shader/'..name..'/shader.vert', 'data/shader/'..name..'/shader.frag')
 end
 local shader = loadShader('julia')
 --~ print(shader)
@@ -20,11 +22,13 @@ local butt = S.newImage('data/background.dds')
 E:new(screen):draw(function(s)
 	S.useShader(shader)
 	S.setUniformf('time', time)
+	S.setUniformf('mouse', mX, 600-mY)
+	S.setUniformf('resolution', screen_width,screen_height)
 	--~ S.setUniformi('tex0', 0)
 	--~ S.rectangle(s.x,s.y,s.w,s.h)
-	butt:draw(s.x,s.y,0,s.w,s.h)
+	butt:draw(0,0,0,screen_width,screen_height)
 	S.useShader(0)
-end):size(800,600):draggable()
+end)
 --~ ui = require 'lib.lqueryui'
 --~ def = ui.loadStyle('default')
 --~ oxy = ui.loadStyle('oxygen')

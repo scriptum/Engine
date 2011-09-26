@@ -50,3 +50,4 @@ int check_for_exit(lua_State *L);
 int error_function(lua_State *L);
 int luaopen_main(lua_State* L, const char *parent);
 #endif /*__MAIN_H__*/
+

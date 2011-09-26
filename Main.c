@@ -14,6 +14,7 @@
 #include "Keyboard.h"
 #include "Sound.h"
 #include "render.h"
+#include "SOIL/SOIL.h"
 /* cairo binding lua-oocairo */
 //#include "lua-oocairo/oocairo.h"
 
@@ -105,6 +106,8 @@ static int Lua_Main_exit(lua_State *L) {
 
 static int Lua_Main_poll(lua_State *L) {
     SDL_Event event;
+    //~ myEventData * data;
+    GLuint tex_id;
     //В общем, тут идет дохрена ненужных нам событий (штук 300), которые могут тормозить игру, их нужно пропускать.
     while ( SDL_PollEvent( &event ) ) {
         //printf("|");
@@ -144,7 +147,18 @@ static int Lua_Main_poll(lua_State *L) {
             lua_pushstring(L, "rz");
             lua_pushinteger(L, event.resize.w);
             lua_pushinteger(L, event.resize.h);
+            resize(event.resize.w, event.resize.h);
             return 3;
+        //~ case SDL_USEREVENT:
+						//~ data = (myEventData *)event.user.data1;
+						//~ tex_id = SOIL_internal_create_OGL_texture(
+						//~ data->img, data->width, data->height, data->channels,
+						//~ 0, SOIL_FLAG_TEXTURE_REPEATS,
+						//~ GL_TEXTURE_2D, GL_TEXTURE_2D,
+						//~ GL_MAX_TEXTURE_SIZE );
+						//~ SOIL_free_image_data( data->img );
+						//~ data->ptr->texture = tex_id;
+						//~ free(data);
         }
     }
     lua_pushnil(L);
@@ -156,11 +170,17 @@ static int Lua_Main_clear(lua_State *L) {
 	return 0;
 }
 
+static int Lua_Main_swap(lua_State *L) {
+	SDL_GL_SwapBuffers();
+	return 0;
+}
+
 static const struct luaL_Reg mainlib [] = {
 	{"setDelta", Lua_Main_setDelta},
 	{"fps", Lua_Main_fps},
 	{"poll", Lua_Main_poll},
 	{"clear", Lua_Main_clear},
+	{"swapBuffers", Lua_Main_swap},
 	{"exit", Lua_Main_exit},
 	{NULL, NULL}
 };

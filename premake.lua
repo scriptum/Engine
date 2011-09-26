@@ -17,7 +17,8 @@ package.libpaths = { "./lib" }
 package.includepaths = {"./include"}
 --package.buildoptions = {"`sdl-config --cflags`"}
 --package.linkoptions = { "`sdl-config --libs`" }
---~ package.postbuildcommands = {
-	--~ "cp /home/rpg/engine/engine/bin/Release/engine /home/rpg/Игры/Monopoly/bin/linux",
+package.postbuildcommands = {
+	"strip -s bin/Release/engine",
+	"cp bin/Release/engine /home/rpg/Игры/Monopoly/bin/linux"
 	--~ "cd /home/rpg/Игры/Monopoly; ./run_russian.sh"
---~ }
+}

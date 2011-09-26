@@ -3,7 +3,7 @@
 #define __RENDER_H_
 
 struct {
-	char GLSL, BE;
+	char GLSL, BE, FBO;
 } supported;
 
 // GL_ARB_shading_language_100, GL_ARB_shader_objects, GL_ARB_fragment_shader, GL_ARB_vertex_shader
@@ -34,6 +34,29 @@ extern PFNGLGETPROGRAMIVPROC            glGetProgramiv_;
 
 // GL_EXT_blend_minmax
 extern PFNGLBLENDEQUATIONEXTPROC glBlendEquation_;
+
+// GL_EXT_framebuffer_object
+extern PFNGLBINDRENDERBUFFEREXTPROC        glBindRenderbuffer_;
+extern PFNGLDELETERENDERBUFFERSEXTPROC     glDeleteRenderbuffers_;
+extern PFNGLGENFRAMEBUFFERSEXTPROC         glGenRenderbuffers_;
+extern PFNGLRENDERBUFFERSTORAGEEXTPROC     glRenderbufferStorage_;
+extern PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC  glCheckFramebufferStatus_;
+extern PFNGLBINDFRAMEBUFFEREXTPROC         glBindFramebuffer_;
+extern PFNGLDELETEFRAMEBUFFERSEXTPROC      glDeleteFramebuffers_;
+extern PFNGLGENFRAMEBUFFERSEXTPROC         glGenFramebuffers_;
+extern PFNGLFRAMEBUFFERTEXTURE2DEXTPROC    glFramebufferTexture2D_;
+extern PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC glFramebufferRenderbuffer_;
+extern PFNGLGENERATEMIPMAPEXTPROC          glGenerateMipmap_;
+
+// GL_EXT_framebuffer_blit
+#ifndef GL_EXT_framebuffer_blit
+#define GL_READ_FRAMEBUFFER_EXT           0x8CA8
+#define GL_DRAW_FRAMEBUFFER_EXT           0x8CA9
+#define GL_DRAW_FRAMEBUFFER_BINDING_EXT   0x8CA6
+#define GL_READ_FRAMEBUFFER_BINDING_EXT   0x8CAA
+typedef void (APIENTRYP PFNGLBLITFRAMEBUFFEREXTPROC) (GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1, GLbitfield mask, GLenum filter);
+#endif
+extern PFNGLBLITFRAMEBUFFEREXTPROC         glBlitFramebuffer_;
 
 //~ extern PFNGLBLENDFUNCSEPARATEEXTPROC glBlendFuncSeparate_;
 

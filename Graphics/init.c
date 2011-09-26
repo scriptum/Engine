@@ -7,6 +7,18 @@
 #include "../physfsrwops.h"
 #include "../render.h"
 SDL_Surface *screen;
+Uint32 flags;
+
+void resize(int width, int height)
+{
+	screen = SDL_SetVideoMode(width, height, 32, flags);
+	glViewport( 0, 0, width, height );
+	glMatrixMode( GL_PROJECTION );
+	glLoadIdentity();
+	glOrtho( 0, width, height, 0, -1, 1 );
+	glMatrixMode( GL_MODELVIEW );
+	glLoadIdentity();
+}
 
 int Lua_Graphics_init(lua_State *L) {
 	char * appName = (char *)luaL_checkstring(L, 1);
@@ -17,7 +29,6 @@ int Lua_Graphics_init(lua_State *L) {
 	char resizable = lua_toboolean(L, 6);
 	char vsync = lua_toboolean(L, 7);
 
-	Uint32 flags;
 	flags = SDL_OPENGL;
 
 	if (fullscreen) {

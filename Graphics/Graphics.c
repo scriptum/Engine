@@ -108,9 +108,10 @@ static const struct luaL_Reg graphicslib [] = {
 	{"point",		    	Lua_Graphics_point},
 	{"circle",			    Lua_Graphics_circle},
 	{"setLineWidth",		Lua_Graphics_setLineWidth},
-    {"setPointSize",		Lua_Graphics_setPointSize},
+  {"setPointSize",		Lua_Graphics_setPointSize},
 	{"setSmooth",		    Lua_Graphics_setSmooth},
-
+	{"newFBO",		Lua_Framebuffer_new},
+	{"setFBO",		    Lua_Framebuffer_setRenderTarget},
 
 	{NULL, NULL}
 };
@@ -127,14 +128,23 @@ static const struct luaL_Reg imagelib_m [] = {
 	{NULL, NULL}
 };
 
+//~ static const struct luaL_Reg framebufferlib_m [] = {
+	//~ {"__gc",				framebuffer_gc},
+	//~ {"__tostring",			framebuffer_tostring},
+	//~ {"getWidth",			Lua_Framebuffer_getWidth},
+	//~ {"getHeight",			Lua_Framebuffer_getHeight},
+	//~ {"getTextureId",		Lua_Framebuffer_getTextureId},
+	//~ {"getSize",				Lua_Framebuffer_getSize},
+	//~ {"draw",				Lua_Framebuffer_draw},
+	//~ {"drawq",			    Lua_Framebuffer_drawq},
+	//~ {NULL, NULL}
+//~ };
+
 int luaopen_graphics(lua_State *L, const char *parent) {
 	//~ imgmutex = SDL_CreateMutex();
-	//~ imgloader = SDL_CreateThread(image_loader, NULL); 
 	//~ glGenTextures(1, &null_texture);
 	//~ glBindTexture(GL_TEXTURE_2D, null_texture);
-	//~ glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-	//~ int i;
-	//~ for (i = 0; i < IMG_LOAD_SLOTS; i++) img_load_slot[i] = NULL;
+	//~ glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, "9999");
 	luaL_newmetatable(L, "scrupp.image");
 	/* metatable.__index = metatable */
 	lua_pushvalue(L, -1);	/* duplicates the metatable */

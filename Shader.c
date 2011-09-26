@@ -25,6 +25,7 @@ int compile(GLuint shader, const char* name)
 	GLint blen = 0;
 	GLsizei slen = 0;
 	GLchar* compiler_log;
+	
 	glCompileShader_(shader);
 
 	glGetShaderiv_(shader, GL_COMPILE_STATUS, &compiled);
@@ -51,6 +52,7 @@ static int Lua_Shader_load(lua_State *L)
 	GLuint v, f, p;
 	unsigned int vslen, fslen;
 	GLint linked;
+	if(!supported.GLSL) return 0;
 	//create shader
 	v = glCreateShaderObject_(GL_VERTEX_SHADER);
 	f = glCreateShaderObject_(GL_FRAGMENT_SHADER);
@@ -91,6 +93,7 @@ static int Lua_Shader_load(lua_State *L)
 GLuint current_program;
 static int Lua_Shader_use(lua_State *L)
 {
+	if(!supported.GLSL) return 0;
 	current_program = (GLuint)luaL_checkint(L, 1);
 	glUseProgramObject_(current_program);
 }
@@ -99,15 +102,17 @@ GLuint getUniform(lua_State *L)
 {
 	const char *name;
 	GLuint location;
+	if(!supported.GLSL) return 0;
 	if(lua_isnumber(L, 1)) return luaL_checkint(L, 1);
 	name = lua_tostring(L, 1);
 	location = glGetUniformLocation_(current_program, name);
-	if(location == -1) return luaL_error(L, "Error: uniform '%s' not found", name);
+	//~ if(location == -1) return luaL_error(L, "Error: uniform '%s' not found", name);
 	return location;
 }
 
 static int Lua_Shader_setUniformf(lua_State *L)
 {
+	if(!supported.GLSL) return 0;
 	switch(lua_gettop(L))
 	{
 		case 2:
@@ -128,12 +133,8 @@ static int Lua_Shader_setUniformf(lua_State *L)
 
 static int Lua_Shader_setUniformi(lua_State *L)
 {
-	switch(lua_gettop(L))
-	{
-		case 2:
-			glUniform1i_(getUniform(L), (int)luaL_checknumber(L, 2));
-			break;
-	}
+	if(!supported.GLSL) return 0;
+	glUniform1i_(getUniform(L), (int)luaL_checknumber(L, 2));
 	return 0;
 }
 static const struct luaL_Reg shaderlib [] = {

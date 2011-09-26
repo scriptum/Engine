@@ -11,61 +11,67 @@
 #define checkimage(L) \
 	(Lua_Image *)luaL_checkudata(L, 1, "scrupp.image")
 
-//~ int image_loader(void * data)
-//~ {
-  //~ int width, height, channels;
-  //~ GLuint tex_id;
-  //~ unsigned char* img;
-  //~ unsigned int file_size;
-  //~ unsigned char *myBuf;
-  //~ PHYSFS_file* myfile;
-  //~ //while (1) 
-  //~ {
-    //~ SDL_LockMutex(imgmutex);
-    //~ int i;
-    //~ for (i = 0; i < IMG_LOAD_SLOTS; i++)
-      //~ {
-	//~ if(img_load_slot[i])
-	//~ {
-	  //~ myfile = PHYSFS_openRead(img_load_slot[i]->file);
-	  //~ if (!myfile)
-	    //~ printf("Error loading file '%s': %s", img_load_slot[i]->file, SDL_GetError());
-	  //~ file_size = PHYSFS_fileLength(myfile);
-	  //~ 
-	  //~ myBuf = (unsigned char *)malloc(sizeof(unsigned char) * file_size);
-	  //~ PHYSFS_read (myfile, myBuf, sizeof(unsigned char), file_size);
-	  //~ PHYSFS_close(myfile);
-	  //~ if( NULL == myBuf )
-	    //~ printf("Error loading file '%s': %s", img_load_slot[i]->file, SDL_GetError());
-	  //~ printf("%s\n", img_load_slot[i]->file);
-	  //~ img = SOIL_load_image_from_memory(
-					  //~ myBuf, sizeof(unsigned char) * file_size,
-					  //~ &width, &height, &channels,
-					  //~ 0 );
-	  //~ 
-	  //~ printf("%d\n", img);
-	  //~ tex_id = SOIL_internal_create_OGL_texture(
-			  //~ img, width, height, channels,
-			  //~ 0, 0,
-			  //~ GL_TEXTURE_2D, GL_TEXTURE_2D,
-			  //~ GL_MAX_TEXTURE_SIZE );
-	  //~ SOIL_free_image_data( img );
-	  //~ 
-	  //~ free(myBuf);
-	  //~ printf("%s\n", img_load_slot[i]->file);
-	  //~ img_load_slot[i]->image->w = width;
-	  //~ img_load_slot[i]->image->h = height;
-	  //~ img_load_slot[i]->image->texture = tex_id;
-	  //~ free(img_load_slot[i]->file);
-	  //~ printf("%d\n", img);
-	  //~ free(img_load_slot[i]);
-	  //~ img_load_slot[i] = NULL;
-	  //~ break;
-	//~ }
-      //~ }
-    //~ SDL_UnlockMutex(imgmutex);
-    //~ SDL_Delay(10);
-  //~ }
+//~ int load_image_from_string(void * data) {
+	//~ SDL_LockMutex(imgmutex);
+	//~ PHYSFS_file* myfile;
+	//~ unsigned char *myBuf;
+	//~ unsigned int file_size;
+	//~ Lua_Image *ptr = (Lua_Image *) data;
+	//~ int width, height, channels;
+	//~ unsigned int tex_id;
+	//~ unsigned char* img;
+	//~ SDL_Event event;
+	//~ myEventData * myData;
+	//~ printf("%s\n", ptr->name);
+	//~ myfile = PHYSFS_openRead(ptr->name);
+	//~ file_size = PHYSFS_fileLength(myfile);
+	//~ 
+	//~ myBuf = (unsigned char *)malloc(sizeof(unsigned char) * file_size);
+	//~ PHYSFS_read (myfile, myBuf, sizeof(unsigned char), file_size);
+	//~ PHYSFS_close(myfile);
+	//~ printf("%s %d\n", ptr->name, file_size);
+	//~ 
+	//~ img = SOIL_load_image_from_memory(
+				//~ myBuf, sizeof(unsigned char) * file_size,
+				//~ &width, &height, &channels,
+				//~ 0 );
+	//~ printf("%d\n", img);
+	//~ tex_id = SOIL_internal_create_OGL_texture(
+			//~ img, width, height, channels,
+			//~ 0, SOIL_FLAG_TEXTURE_REPEATS,
+			//~ GL_TEXTURE_2D, GL_TEXTURE_2D,
+			//~ GL_MAX_TEXTURE_SIZE );
+	/*	and nuke the image data	*/
+	//~ SOIL_free_image_data( img );
+	//~ ptr->texture = tex_id;
+	
+	//~ ptr->w = width;
+	//~ ptr->h = height;
+	//~ free(myBuf);
+	//~ event.type = SDL_USEREVENT;
+	//~ myData = (myEventData*)malloc(sizeof(myEventData));
+	//~ myData->width = width;
+	//~ myData->height = height;
+	//~ myData->img = img;
+	//~ myData->channels = channels;
+	//~ myData->ptr = ptr;
+	//~ event.user.data1 = (void*) myData;
+	//~ SDL_PushEvent(&event);
+	//~ SDL_UnlockMutex(imgmutex);
+	//~ return 0;
+//~ }
+
+//~ int Lua_Image_load(lua_State *L) {
+    //~ Lua_Image *ptr;
+    //~ ptr = lua_newuserdata(L, sizeof(Lua_Image));
+    //~ ptr->texture = null_texture;
+    //~ ptr->w = 1;
+    //~ ptr->h = 1;
+    //~ ptr->name = luaL_checkstring(L, 1);
+    //~ luaL_getmetatable(L, "scrupp.image");
+    //~ lua_setmetatable(L, -2);
+    //~ SDL_CreateThread(load_image_from_string, (void *)ptr);
+    //~ return 1;
 //~ }
 
 int load_image_from_string(lua_State *L, const unsigned char *myBuf, unsigned int file_size, int repeat) {
@@ -90,6 +96,7 @@ int load_image_from_string(lua_State *L, const unsigned char *myBuf, unsigned in
 	ptr->texture = tex_id;
 	ptr->w = width;
 	ptr->h = height;
+	ptr->fbo = 0;
 	luaL_getmetatable(L, "scrupp.image");
 	lua_setmetatable(L, -2);
 	return 1;
@@ -118,33 +125,6 @@ int Lua_Image_load(lua_State *L) {
 	return 1;
 }
 
-//~ int Lua_Image_load(lua_State *L) {
-    //~ const char* filename = luaL_checkstring(L, 1);
-    //~ Lua_Image *ptr;
-    //~ ptr = lua_newuserdata(L, sizeof(Lua_Image));
-    //~ ptr->texture = null_texture;
-    //~ ptr->w = 1;
-    //~ ptr->h = 1;
-    //~ luaL_getmetatable(L, "scrupp.image");
-    //~ lua_setmetatable(L, -2);
-    //~ //find free slot
-    //~ int i;
-    //~ SDL_LockMutex(imgmutex);
-    //~ for (i = 0; i < IMG_LOAD_SLOTS; i++)
-    //~ {
-      //~ if(!img_load_slot[i])
-      //~ {
-	//~ img_load_slot[i] = (img_load_request*)malloc(sizeof(img_load_request));
-	//~ img_load_slot[i]->file = (char*)malloc(strlen(filename)+1);
-	//~ strcpy(img_load_slot[i]->file, filename);
-	//~ printf("send %s\n", img_load_slot[i]->file);
-	//~ img_load_slot[i]->image = ptr;
-	//~ break;
-      //~ }
-    //~ }
-    //~ SDL_UnlockMutex(imgmutex);
-    //~ return 1;
-//~ }
 
 int Lua_Image_loadFromString(lua_State *L) {
 	unsigned int file_size;
@@ -284,6 +264,10 @@ int Lua_Image_drawq(lua_State *L) {
 int image_gc(lua_State *L) {
 	Lua_Image *image = checkimage(L);
 	glDeleteTextures(1, &image->texture);
+	if(image->fbo) {
+		glDeleteFramebuffers_(1, &image->fbo);
+	}
+	//~ printf("Texture # %d freed\n", image->texture);
 	return 0;
 }
 

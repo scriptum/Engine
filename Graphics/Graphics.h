@@ -23,7 +23,7 @@
 
 typedef struct Lua_Image {
 	/* OpenGL texture id */
-	GLuint texture;
+	GLuint texture, fbo;
 	/* width and height of the original image */
 	int w;
 	int h;
@@ -31,19 +31,25 @@ typedef struct Lua_Image {
 
 GLuint quadlist;
 
-typedef struct img_load_request {
-	char * file;
-	Lua_Image * image;
-} img_load_request;
+//~ typedef struct img_load_request {
+	//~ char * file;
+	//~ Lua_Image * image;
+//~ } img_load_request;
 
-//~ #define IMG_LOAD_SLOTS 200
-//~ img_load_request *img_load_slot[IMG_LOAD_SLOTS];
+//~ typedef struct myEventData{
+	//~ Lua_Image *ptr;
+	//~ int width, height, channels;
+	//~ unsigned char* img;
+//~ }myEventData;
+
 //~ SDL_mutex *imgmutex;
-//~ SDL_Thread *imgloader;
 //~ GLuint null_texture;
+
 int image_loader(void * data);
 
 int Lua_Graphics_init(lua_State *L);
+
+void resize(int width, int height);
 
 int Lua_Graphics_getModes(lua_State *L);
 
@@ -108,6 +114,10 @@ int Lua_Graphics_setPointSize(lua_State *L);
 int Lua_Graphics_circle(lua_State *L);
 
 int Lua_Graphics_point(lua_State *L);
+
+int Lua_Framebuffer_new(lua_State *L);
+
+int Lua_Framebuffer_setRenderTarget(lua_State *L);
 
 int luaopen_graphics(lua_State *L, const char *parent);
 

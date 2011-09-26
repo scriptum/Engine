@@ -33,6 +33,24 @@ PFNGLGETPROGRAMIVPROC                 glGetProgramiv_             = NULL;
 
 // GL_EXT_blend_minmax
 PFNGLBLENDEQUATIONEXTPROC glBlendEquation_ = NULL;
+
+// GL_EXT_framebuffer_object
+PFNGLBINDRENDERBUFFEREXTPROC        glBindRenderbuffer_        = NULL;
+PFNGLDELETERENDERBUFFERSEXTPROC     glDeleteRenderbuffers_     = NULL;
+PFNGLGENFRAMEBUFFERSEXTPROC         glGenRenderbuffers_        = NULL;
+PFNGLRENDERBUFFERSTORAGEEXTPROC     glRenderbufferStorage_     = NULL;
+PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC  glCheckFramebufferStatus_  = NULL;
+PFNGLBINDFRAMEBUFFEREXTPROC         glBindFramebuffer_         = NULL;
+PFNGLDELETEFRAMEBUFFERSEXTPROC      glDeleteFramebuffers_      = NULL;
+PFNGLGENFRAMEBUFFERSEXTPROC         glGenFramebuffers_         = NULL;
+PFNGLFRAMEBUFFERTEXTURE2DEXTPROC    glFramebufferTexture2D_    = NULL;
+PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC glFramebufferRenderbuffer_ = NULL;
+PFNGLGENERATEMIPMAPEXTPROC          glGenerateMipmap_          = NULL;
+
+// GL_EXT_framebuffer_blit
+PFNGLBLITFRAMEBUFFEREXTPROC         glBlitFramebuffer_         = NULL;
+
+
 void initRenderer()
 {
 	const char *vendor = (const char *)glGetString(GL_VENDOR);
@@ -42,7 +60,6 @@ void initRenderer()
 	printf("Renderer: %s (%s)\n", renderer, vendor);
 	printf("Driver: %s\n", version);
 	supported.GLSL = 0;
-	supported.BE = 0;
 	//проверка поддержки шейдров
 	if(strstr(exts, "GL_ARB_shading_language_100") && strstr(exts, "GL_ARB_shader_objects") && strstr(exts, "GL_ARB_vertex_shader") && strstr(exts, "GL_ARB_fragment_shader"))
 	{
@@ -73,11 +90,36 @@ void initRenderer()
 		supported.GLSL = 1;
 	}
 	
+	supported.BE = 0;
 	if(strstr(exts, "GL_EXT_blend_minmax"))
 	{
 		glBlendEquation_ = (PFNGLBLENDEQUATIONEXTPROC) SDL_GL_GetProcAddress("glBlendEquationEXT");
 		supported.BE = 1;
 		//~ if(strstr(vendor, "ATI")) ati_minmax_bug = 1;
 		//~ if(dbgexts) conoutf(CON_INIT, "Using GL_EXT_blend_minmax extension.");
+	}
+	
+	supported.FBO = 0;
+	if(strstr(exts, "GL_EXT_framebuffer_object"))
+	{
+		glBindRenderbuffer_        = (PFNGLBINDRENDERBUFFEREXTPROC)       SDL_GL_GetProcAddress("glBindRenderbufferEXT");
+		glDeleteRenderbuffers_     = (PFNGLDELETERENDERBUFFERSEXTPROC)    SDL_GL_GetProcAddress("glDeleteRenderbuffersEXT");
+		glGenRenderbuffers_        = (PFNGLGENFRAMEBUFFERSEXTPROC)        SDL_GL_GetProcAddress("glGenRenderbuffersEXT");
+		glRenderbufferStorage_     = (PFNGLRENDERBUFFERSTORAGEEXTPROC)    SDL_GL_GetProcAddress("glRenderbufferStorageEXT");
+		glCheckFramebufferStatus_  = (PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC) SDL_GL_GetProcAddress("glCheckFramebufferStatusEXT");
+		glBindFramebuffer_         = (PFNGLBINDFRAMEBUFFEREXTPROC)        SDL_GL_GetProcAddress("glBindFramebufferEXT");
+		glDeleteFramebuffers_      = (PFNGLDELETEFRAMEBUFFERSEXTPROC)     SDL_GL_GetProcAddress("glDeleteFramebuffersEXT");
+		glGenFramebuffers_         = (PFNGLGENFRAMEBUFFERSEXTPROC)        SDL_GL_GetProcAddress("glGenFramebuffersEXT");
+		glFramebufferTexture2D_    = (PFNGLFRAMEBUFFERTEXTURE2DEXTPROC)   SDL_GL_GetProcAddress("glFramebufferTexture2DEXT");
+		glFramebufferRenderbuffer_ = (PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC)SDL_GL_GetProcAddress("glFramebufferRenderbufferEXT");
+		glGenerateMipmap_          = (PFNGLGENERATEMIPMAPEXTPROC)         SDL_GL_GetProcAddress("glGenerateMipmapEXT");
+		supported.FBO = 1;
+		//~ if(dbgexts) conoutf(CON_INIT, "Using GL_EXT_framebuffer_object extension.");
+		//~ if(strstr(exts, "GL_EXT_framebuffer_blit"))
+		//~ {
+				//~ glBlitFramebuffer_     = (PFNGLBLITFRAMEBUFFEREXTPROC)        SDL_GL_GetProcAddress("glBlitFramebufferEXT");
+				//~ hasFBB = true;
+				//~ if(dbgexts) conoutf(CON_INIT, "Using GL_EXT_framebuffer_blit extension.");
+		//~ }
 	}
 }
