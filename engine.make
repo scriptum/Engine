@@ -16,7 +16,7 @@ ifeq ($(CONFIG),Release)
   CPPFLAGS := $(DEPFLAGS) -I "./include"
   CFLAGS += $(CPPFLAGS) $(TARGET_ARCH) -g -Os -fomit-frame-pointer
   CXXFLAGS += $(CFLAGS)
-  LDFLAGS += -L$(BINDIR) -L$(LIBDIR) -L"./lib" -lSDL -lSDLmain -lGL -llua5.1 -lSDL_mixer -lphysfs
+  LDFLAGS += -L$(BINDIR) -L$(LIBDIR) -L"./lib" -lSDL -lSDLmain -lGL -llua5.1 -lSDL_mixer -lphysfs -lIL
   LDDEPS :=
   RESFLAGS := -I "./include"
   TARGET := engine

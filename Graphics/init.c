@@ -6,7 +6,7 @@
 #include "Graphics.h"
 #include "../physfsrwops.h"
 #include "../render.h"
-SDL_Surface *screen;
+
 Uint32 flags;
 
 void resize(int width, int height)
@@ -73,7 +73,7 @@ int Lua_Graphics_init(lua_State *L) {
 	glOrtho( 0, width, height, 0, -1, 1 );
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
-	
+	ilInit();
 	if(!quadlist)
 	{
 		quadlist = glGenLists(1);

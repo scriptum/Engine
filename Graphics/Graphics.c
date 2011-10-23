@@ -112,7 +112,8 @@ static const struct luaL_Reg graphicslib [] = {
 	{"setSmooth",		    Lua_Graphics_setSmooth},
 	{"newFBO",		Lua_Framebuffer_new},
 	{"setFBO",		    Lua_Framebuffer_setRenderTarget},
-
+	{"drawMultitexture",		    Lua_Image_drawMultitexture},
+	{"blend",		    Lua_Image_blend},
 	{NULL, NULL}
 };
 
@@ -125,6 +126,7 @@ static const struct luaL_Reg imagelib_m [] = {
 	{"getSize",				Lua_Image_getSize},
 	{"draw",				Lua_Image_draw},
 	{"drawq",			    Lua_Image_drawq},
+	{"save",			    Lua_Image_save},
 	{NULL, NULL}
 };
 

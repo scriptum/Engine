@@ -177,7 +177,7 @@ local layoutUpdate = function(s)
 		end
 		v[pos2X] = offset_x + (sW - v[size2X]) / 2
 		offset_y = offset_y + v[sizeX] + spacing
-		if v.update then v:update() end
+		if v._update then v:_update() end
 	end
 end
 
@@ -195,7 +195,7 @@ ui.newLayout = function(parent, layoutStyle --[[horisontal/vertical]])
 	local e = initui(parent, 'layout')
 	if parent == screen then e:update(layoutUpdateKeys, layoutUpdate) end
 	if layoutStyle then e.layoutStyle = layoutStyle else e.layoutStyle = "vertical" end
-	e.update = layoutUpdate
+	e._update = layoutUpdate
 	return e
 end
 
@@ -233,7 +233,7 @@ local sliderUpdate = function(s)
 		slider.w = 28
 		slider.h = s.h
 	end
-	slider.x = s.x + s.w - slider.w
+	slider.x = trough.x + (s.value - s._min)/(s._max - s._min)*(trough.w - slider.w)
 	slider.y = s.y + math.floor((s.h - slider.h) / 2)
 	slider._drag_bound[1] = slider.y
 	slider._drag_bound[3] = slider.y
@@ -241,14 +241,25 @@ local sliderUpdate = function(s)
 	slider._drag_bound[4] = trough.x
 	if not slider.uiStyle then slider.uiStyle = s.uiStyle.slider end
 end
-ui.newSlider = function(parent, text)
+local sliderMove = function(s)
+	local e = s._parent
+	local value = (s.x - s._drag_bound[4])/(s._drag_bound[2] - s._drag_bound[4])*(e._max - e._min) + e._min
+	if value ~= e.value then
+		e.value = value
+		--~ print(e.value)
+	end
+end
+ui.newSlider = function(parent, text, min, current, max)
 	local e = initui(parent, 'slider')
 	e._text = text
+	e.value = current or 0
+	e._min = min or 0
+	e._max = max or 1
 	e:update(layoutUpdateKeys, sliderUpdate)
 	e:update('uiStyle', sliderUpdate)
 	setStyle(Entity:new(e):draw(ui.draw), e.uiStyle.trough) -- trough
-	setStyle(Entity:new(e):draw(ui.draw):draggable({bound={0,0,0,0}}), e.uiStyle.slider) -- slider
-	e.update = sliderUpdate
+	setStyle(Entity:new(e):draw(ui.draw):draggable({bound={0,0,0,0}, callback = sliderMove}), e.uiStyle.slider) -- slider
+	e._update = sliderUpdate
 	sliderUpdate(e)
 	return e
 end

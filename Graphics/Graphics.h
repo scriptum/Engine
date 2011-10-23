@@ -8,6 +8,7 @@
 #define __GRAPHICS_H__
 
 #include "SDL_opengl.h"
+#include <IL/il.h>
 
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
 	#define RMASK 0xFF000000
@@ -30,7 +31,7 @@ typedef struct Lua_Image {
 } Lua_Image;
 
 GLuint quadlist;
-
+SDL_Surface *screen;
 //~ typedef struct img_load_request {
 	//~ char * file;
 	//~ Lua_Image * image;
@@ -95,6 +96,8 @@ int Lua_Image_getSize(lua_State *L);
 
 int Lua_Image_draw(lua_State *L);
 
+int Lua_Image_drawMultitexture(lua_State *L);
+
 int Lua_Image_drawq(lua_State *L);
 
 int image_gc(lua_State *L);
@@ -120,5 +123,9 @@ int Lua_Framebuffer_new(lua_State *L);
 int Lua_Framebuffer_setRenderTarget(lua_State *L);
 
 int luaopen_graphics(lua_State *L, const char *parent);
+
+int Lua_Image_blend(lua_State *L);
+
+int Lua_Image_save(lua_State *L);
 
 #endif /* __GRAPHICS_H__ */

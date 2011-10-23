@@ -44,6 +44,8 @@
 
 #define CHANNELS	16	/* number of audio channels */
 
+#define dbg(var) printf("%d\n", var)
+
 char* lua_keys[SDLK_LAST];
 char* appName;
 int check_for_exit(lua_State *L);

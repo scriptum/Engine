@@ -1,9 +1,9 @@
 
 #ifndef __RENDER_H_
 #define __RENDER_H_
-
+#define dbg(var) printf("%d\n", var)
 struct {
-	char GLSL, BE, FBO;
+	char GLSL, BE, FBO, MT;
 } supported;
 
 // GL_ARB_shading_language_100, GL_ARB_shader_objects, GL_ARB_fragment_shader, GL_ARB_vertex_shader
@@ -47,6 +47,14 @@ extern PFNGLGENFRAMEBUFFERSEXTPROC         glGenFramebuffers_;
 extern PFNGLFRAMEBUFFERTEXTURE2DEXTPROC    glFramebufferTexture2D_;
 extern PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC glFramebufferRenderbuffer_;
 extern PFNGLGENERATEMIPMAPEXTPROC          glGenerateMipmap_;
+
+// GL_ARB_multitexture
+extern PFNGLACTIVETEXTUREARBPROC       glActiveTexture_;
+extern PFNGLCLIENTACTIVETEXTUREARBPROC glClientActiveTexture_;
+extern PFNGLMULTITEXCOORD2FARBPROC     glMultiTexCoord2f_;
+extern PFNGLMULTITEXCOORD3FARBPROC     glMultiTexCoord3f_;
+extern PFNGLMULTITEXCOORD4FARBPROC     glMultiTexCoord4f_;
+
 
 // GL_EXT_framebuffer_blit
 #ifndef GL_EXT_framebuffer_blit

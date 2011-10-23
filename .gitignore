@@ -2,3 +2,5 @@
 *.d
 *.exe
 *.dll
+bin*
+obj*

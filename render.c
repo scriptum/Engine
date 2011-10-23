@@ -47,6 +47,13 @@ PFNGLFRAMEBUFFERTEXTURE2DEXTPROC    glFramebufferTexture2D_    = NULL;
 PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC glFramebufferRenderbuffer_ = NULL;
 PFNGLGENERATEMIPMAPEXTPROC          glGenerateMipmap_          = NULL;
 
+// GL_ARB_multitexture
+PFNGLACTIVETEXTUREARBPROC       glActiveTexture_       = NULL;
+PFNGLCLIENTACTIVETEXTUREARBPROC glClientActiveTexture_ = NULL;
+PFNGLMULTITEXCOORD2FARBPROC     glMultiTexCoord2f_     = NULL;
+PFNGLMULTITEXCOORD3FARBPROC     glMultiTexCoord3f_     = NULL;
+PFNGLMULTITEXCOORD4FARBPROC     glMultiTexCoord4f_     = NULL;
+
 // GL_EXT_framebuffer_blit
 PFNGLBLITFRAMEBUFFEREXTPROC         glBlitFramebuffer_         = NULL;
 
@@ -121,5 +128,16 @@ void initRenderer()
 				//~ hasFBB = true;
 				//~ if(dbgexts) conoutf(CON_INIT, "Using GL_EXT_framebuffer_blit extension.");
 		//~ }
+	}
+	supported.MT = 0;
+	if(strstr(exts, "GL_ARB_multitexture"))
+	{
+			glActiveTexture_       = (PFNGLACTIVETEXTUREARBPROC)      SDL_GL_GetProcAddress("glActiveTextureARB");
+			glClientActiveTexture_ = (PFNGLCLIENTACTIVETEXTUREARBPROC)SDL_GL_GetProcAddress("glClientActiveTextureARB");
+			glMultiTexCoord2f_     = (PFNGLMULTITEXCOORD2FARBPROC)    SDL_GL_GetProcAddress("glMultiTexCoord2fARB");
+			glMultiTexCoord3f_     = (PFNGLMULTITEXCOORD3FARBPROC)    SDL_GL_GetProcAddress("glMultiTexCoord3fARB");
+			glMultiTexCoord4f_     = (PFNGLMULTITEXCOORD4FARBPROC)    SDL_GL_GetProcAddress("glMultiTexCoord4fARB");
+			supported.MT = 1;
+			dbg(glActiveTexture_);
 	}
 }

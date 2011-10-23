@@ -3,6 +3,13 @@
 #include "Shader.h"
 #include "physfs.h"
 #include "render.h"
+
+const char * std_vertex_shader = "void main()\
+{\
+	gl_Position    = gl_ModelViewProjectionMatrix * gl_Vertex;\
+	gl_TexCoord[0] = gl_MultiTexCoord0;\
+}";
+
 char * loadfile(const char * name, unsigned int * length)
 {
 	char * data;
@@ -86,8 +93,56 @@ static int Lua_Shader_load(lua_State *L)
 		lua_pushnil(L);
 		return 1;
 	}
+	glDeleteObject_(v);
+	glDeleteObject_(f);
 	lua_pushinteger(L, p);
 	return 1;
+}
+
+
+static int Lua_Shader_loadFromstring(lua_State *L)
+{
+	GLuint v, f, p, linked;
+	const char* str = luaL_checkstring(L, 1); //shader text
+	if(!supported.GLSL) return 0;
+	v = glCreateShaderObject_(GL_VERTEX_SHADER);
+	f = glCreateShaderObject_(GL_FRAGMENT_SHADER);
+	glShaderSource_(v, 1, &std_vertex_shader, NULL);
+	glShaderSource_(f, 1, &str, NULL);
+	if(!compile(v, "simple_vertex"))
+	{
+		lua_pushnil(L);
+		return 1;
+	}
+	if(!compile(f, "string_shader"))
+	{
+		lua_pushnil(L);
+		return 1;
+	}
+	p = glCreateProgramObject_();
+	glAttachObject_(p,v);
+	glAttachObject_(p,f);
+	glLinkProgram_(p);
+  
+	glGetProgramiv_(p, GL_LINK_STATUS, &linked);
+	if (!linked)
+	{
+		printf("Error while linking shader\n");
+		lua_pushnil(L);
+		return 1;
+	}
+	glDeleteObject_(v);
+	glDeleteObject_(f);
+	
+	lua_pushinteger(L, p);
+	return 1;
+}
+static int Lua_Shader_del(lua_State *L)
+{
+	GLuint p;
+	if(!supported.GLSL) return 0;
+	p = (GLuint)luaL_checkint(L, 1);
+	glDeleteObject_(p);
 }
 
 GLuint current_program;
@@ -139,6 +194,8 @@ static int Lua_Shader_setUniformi(lua_State *L)
 }
 static const struct luaL_Reg shaderlib [] = {
 	{"newShader", Lua_Shader_load},
+	{"deleteShader", Lua_Shader_del},
+	{"newPixelEffect", Lua_Shader_loadFromstring},
 	{"useShader", Lua_Shader_use},
 	{"setUniformf", Lua_Shader_setUniformf},
 	{"setUniformi", Lua_Shader_setUniformi},

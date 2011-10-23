@@ -7,6 +7,8 @@
 #include "../Macros.h"
 #include "Graphics.h"
 #include "../physfsrwops.h"
+#include "../render.h"
+
 
 #define checkimage(L) \
 	(Lua_Image *)luaL_checkudata(L, 1, "scrupp.image")
@@ -134,7 +136,27 @@ int Lua_Image_loadFromString(lua_State *L) {
 	if(!res) return luaL_error(L, "Error loading file from string: %s", stbi_failure_reason());
 	return 1;
 }
+int Lua_Image_save(lua_State *L) {
+	Lua_Image *image = checkimage(L);
+	const unsigned char* name = luaL_checklstring(L, 2, NULL);
+	unsigned char* img = (unsigned char*)malloc(sizeof(char)*4*image->w*image->h);
 
+	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, image->fbo);
+  glBindTexture(GL_TEXTURE_2D, image->texture);
+  glReadBuffer(GL_COLOR_ATTACHMENT0_EXT);
+	glReadPixels(0, 0, image->w,image->h,GL_RGB,GL_UNSIGNED_BYTE,img);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+  
+	ILuint imageID = ilGenImage();
+	ilBindImage( imageID );
+	ilTexImage(image->w,image->h,1, 3,IL_RGB,IL_UNSIGNED_BYTE,img);
+	ilEnable(IL_FILE_OVERWRITE);
+  ilSaveImage(name);
+  ilDeleteImages(1, &imageID);
+  free(img);
+  return 0;
+}
 
 int Lua_Image_getWidth(lua_State *L) {
 	Lua_Image *image = checkimage(L);
@@ -170,6 +192,7 @@ int Lua_Image_getSize(lua_State *L) {
 
 int Lua_Image_draw(lua_State *L) {
 	Lua_Image *image = checkimage(L);
+	
 	float x,y,angle,w,h,tw,th;
 	if(lua_istable(L, 2)) {
 	    LUA_GET_CHCKNUM(x)
@@ -196,11 +219,42 @@ int Lua_Image_draw(lua_State *L) {
 	glPushMatrix();
 	glTranslatef(x, y, 0);
 	glRotatef(angle,0,0,1);
-	
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, image->texture);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_TEXTURE_2D);
 	glScalef(w, h, 0);
+	glCallList(quadlist);
+	glPopMatrix();
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_TEXTURE_2D);
+	return 0;
+}
+
+int Lua_Image_drawMultitexture(lua_State *L) {
+	Lua_Image *image = checkimage(L);
+	Lua_Image *image2 = (Lua_Image *)luaL_checkudata(L, 2, "scrupp.image");
+	float x,y,angle,w,h,tw,th;
+	x = luaL_checknumber(L, 3);
+	y = luaL_checknumber(L, 4);
+	angle = lua_tonumber(L, 5);
+	w = lua_tonumber(L, 6);
+	h = lua_tonumber(L, 7);
+	if(!w) w = image->w;
+	if(!h) h = w * image->h / image->w;
+	glPushMatrix();
+	glTranslatef(x, y, 0);
+	glRotatef(angle,0,0,1);
+	glScalef(w, h, 0);
+	glEnable(GL_TEXTURE_2D);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, image->texture);
+	
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, image2->texture);
+	
+	glActiveTexture(GL_TEXTURE0);
+	glEnable(GL_CULL_FACE);
 	glCallList(quadlist);
 	glPopMatrix();
 	glDisable(GL_CULL_FACE);
@@ -263,15 +317,23 @@ int Lua_Image_drawq(lua_State *L) {
 
 int image_gc(lua_State *L) {
 	Lua_Image *image = checkimage(L);
+	
 	glDeleteTextures(1, &image->texture);
 	if(image->fbo) {
 		glDeleteFramebuffers_(1, &image->fbo);
+		//~ printf("%d\n", &glDeleteFramebuffers_);
 	}
-	//~ printf("Texture # %d freed\n", image->texture);
+	printf("Texture # %d freed\n", image->texture);
 	return 0;
 }
 
 int image_tostring(lua_State *L) {
 	lua_pushliteral(L, "Image");
 	return 1;
+}
+
+int Lua_Image_blend(lua_State *L)
+{
+	if(lua_toboolean(L, 1)) glEnable(GL_BLEND);
+	else glDisable(GL_BLEND);
 }

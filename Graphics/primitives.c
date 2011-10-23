@@ -131,6 +131,8 @@ int Lua_Graphics_setBlendMode(lua_State *L) {
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
   else if (strcmp(str, "screen") == 0)
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_COLOR);
+  else if (strcmp(str, "detail") == 0)
+    glBlendFunc(GL_DST_COLOR, GL_SRC_COLOR);
   //~ else if (strcmp(str, "mask") == 0)
     //~ glBlendFuncSeparate_(GL_ZERO, GL_ONE, GL_SRC_COLOR, GL_ZERO);
   //~ else if (strcmp(str, "foreground") == 0)
